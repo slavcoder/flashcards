@@ -1,0 +1,39 @@
+@import '../../variables.scss';
+
+.button {
+    color: $colorDark;
+    padding: .4em .2em;
+    border: 1px solid $colorDark;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.primary {
+    @extend .button;
+    background-color: $colorPrimary;
+
+    &:hover,
+    &:focus {
+        background-color: darken($colorPrimary, 15%);
+    }
+}
+
+.secondary {
+    @extend .button;
+    background-color: $colorSecondary;
+    
+    &:hover,
+    &:focus {
+        background-color: lighten($colorSecondary, 10%);
+    }
+}
+
+.secondaryLight {
+    @extend .button;
+    background-color: $colorSecondaryLight;
+    
+    &:hover,
+    &:focus {
+        background-color: lighten($colorSecondaryLight, 15%);
+    }
+}

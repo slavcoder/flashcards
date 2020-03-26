@@ -1,0 +1,73 @@
+@import '../../variables.scss';
+
+@keyframes goDown {
+    0%{transform: translateY(-100%)}
+    100%{transform: translateY(0); opacity: 1;}
+}
+
+.header {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        animation: goDown;
+        animation-duration: .4s;
+        animation-fill-mode: forwards;
+    }
+    
+    &::before {
+        width: 120%;
+        height: 65%;
+        background-color: $colorSecondary;
+        top: 0;
+        left: -10%;
+        transform: translateY(-100%);
+        z-index: 1;
+    }
+    &::after {
+        width: 100%;
+        height: 35%;
+        background-color: $colorSecondaryLight;
+        bottom: 0;
+        animation-delay: .3s;
+        transform: translateY(-300%);
+        z-index: 0;
+    }
+}
+
+.heading {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.link {
+    animation: goDown;
+    transform: translateY(-200%);
+    animation-duration: .4s;
+    animation-delay: .6s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    display: block;
+    color: $colorDark;
+    text-decoration: none;
+    background-color: #fff;
+    padding: .3em 1.2em;
+    transition: .1s;
+
+    &:hover,
+    &:focus {
+        background-color: $colorBackground;
+    }
+}
