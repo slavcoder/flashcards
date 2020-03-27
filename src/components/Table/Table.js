@@ -17,19 +17,32 @@ const Table = () => (
                         <Row
                             learn={23}
                             count={221}
-                            name='lorem ipsum dolorem'
+                            name='all'
                             type='default'
-                            learnFn={context.learnCards}
-                            showListDetailsFn={context.showListDetails}
+                            learnFn={() => {
+                                context.setLearningModal('all')
+                                context.showModal('learningModal')
+                            }}
+                            showListDetailsFn={() => {
+                                context.setLearningModal('all')
+                                context.showModal('listDetailsModal')
+                            }}
                         />
-                        {context.lists.map((list, index) => (
+                        {context.list.map((list, index) => (
                             <Row
                                 key={index}
                                 learn={list.cards.filter(el => el.nextRepetition === context.today).length}
                                 count={list.cards.length}
                                 name={list.name}
-                                learnFn={context.learnCards}
-                                showListDetailsFn={context.showListDetails}
+                                learnFn={() => context.showModal('learningModal')}
+                                learnFn={() => {
+                                    context.setLearningModal(list.name)
+                                    context.showModal('learningModal')
+                                }}
+                                showListDetailsFn={() => {
+                                    context.setLearningModal(list.name)
+                                    context.showModal('listDetailsModal')
+                                }}
                             />
                         ))}
                     </tbody>

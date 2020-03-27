@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
     const nameButtonType = type === 'userList' ? 'secondaryLight' : 'secondary'
-    const userList = type === 'userList' ? name : false
 
     return (
         <tr>
@@ -15,7 +14,7 @@ const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
             {learn ? (
                 <Button
                     type='primary'
-                    onClick={() => learnFn(learn)}
+                    onClick={learnFn}
                 >
                     {learn}
                 </Button>
@@ -40,7 +39,7 @@ const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
             >
                 <Button
                     type={nameButtonType}
-                    onClick={() => showListDetailsFn(userList)}
+                    onClick={showListDetailsFn}
                 >
                     {name}
                 </Button>
@@ -48,7 +47,6 @@ const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
         </tr>
     );
 }
-
 
 Row.propTypes = {
     learn: PropTypes.number.isRequired,
