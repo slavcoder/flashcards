@@ -6,185 +6,15 @@ import Table from "./components/Table/Table";
 import Modal from "./components/Modal/Modal";
 import AppContext from './context';
 import data from './data/data'
-// import modals from './data/modals'
+import modals from './data/modals'
 
-
-// const modals = [
-//     'learningModal',
-//     'newCardModal',
-//     'updateCardModal',
-//     'newListModal',
-//     'updateListModal',
-//     'listDetailsModal'
-// ]
+const date = new Date()
 
 class App extends React.Component {
     state = {
+        today: date.toISOString().split('T')[0],
         list: data,
-        learningModal: {
-            open: false,
-            title: 'learning mode',
-            name: 'learningModal',
-            list: 'all',
-            content: {
-                topButtons: [],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () => this.closeModal(this.state.learningModal.name)
-                    }
-                ]
-            }
-        },
-        newCardModal: {
-            name: 'newCardModal',
-            open: false,
-            title: 'new card',
-            content: {
-                topButtons: [],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () => this.closeModal(this.state.newCardModal.name)
-                    },
-                    {
-                        active: true,
-                        value: 'add',
-                        type: 'primary',
-                        action: () => {console.log('todo action')}
-                    }
-                ]
-            }
-        },
-        updateCardModal: {
-            name: 'updateCardModal',
-            open: false,
-            title: 'update card',
-            content: {
-                topButtons: [],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () => this.closeModal(this.state.updateCardModal.name)
-                    },
-                    {
-                        active: true,
-                        value: 'delete',
-                        type: 'danger',
-                        action: () => {console.log('todo action')}
-                    },
-                    {
-                        active: true,
-                        value: 'reset progress',
-                        type: 'secondaryLight',
-                        action: () => {console.log('todo action')}
-                    },
-                    {
-                        active: true,
-                        value: 'save',
-                        type: 'primary',
-                        action: () => {console.log('todo action')}
-                    },
-                ]
-            }
-        },
-        newListModal: {
-            name: 'newListModal',
-            open: false,
-            title: 'new list',
-            content: {
-                topButtons: [],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () => this.closeModal(this.state.newListModal.name)
-                    },
-                    {
-                        active: true,
-                        value: 'add',
-                        type: 'primary',
-                        action: () => {console.log('todo action')}
-                    },
-                ]
-            }
-        },
-        updateListModal: {
-            name: 'updateListModal',
-            open: false,
-            title: 'update list',
-            content: {
-                topButtons: [],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () => this.closeModal(this.state.updateListModal.name)
-                    },
-                    {
-                        active: true,
-                        value: 'save',
-                        type: 'primary',
-                        action: () => {console.log('todo action')}
-                    },
-                ]
-            }
-        },
-        listDetailsModal: {
-            name: 'listDetailsModal',
-            open: false,
-            title: 'list details',
-            content: {
-                topButtons: [
-                    {
-                        active: true,
-                        value: 'description',
-                        type: 'neutral',
-                        action: () => {console.log('todo action')}
-                    },
-                    {
-                        active: true,
-                        value: 'delete',
-                        type: 'danger',
-                        action: () => {console.log('todo action')}
-                    },
-                    {
-                        active: true,
-                        value: 'edit',
-                        type: 'secondary',
-                        action: () => {console.log('todo action')}
-                    },
-                ],
-                bottomButtons: [
-                    {
-                        active: true,
-                        value: 'close',
-                        type: 'neutral',
-                        action: () =>  this.closeModal(this.state.listDetailsModal.name)
-                    },
-                    {
-                        active: true,
-                        value: 'new card',
-                        type: 'primaryLight',
-                        action: () => this.showModal(this.state.updateListModal.name),
-                    },
-                    {
-                        active: true,
-                        value: 'learn',
-                        type: 'primary',
-                        action: () => {console.log('todo action')}
-                    },
-                ]
-            }
-        }
+        ...modals
     }
 
     showModal = (modalName) => {
@@ -213,13 +43,28 @@ class App extends React.Component {
         })
     }
     
-    createCard = (newCard) => {
-        // newCard: {
-        //     list: '',
-        //     front: '',
-        //     back: ''
-        // }
-        console.log('create card')
+    createCard = ({listName, front, back}) => {
+        console.log('create card: ' + listName, front, back)
+
+        
+        this.setState(prevState => {
+            const list = [...prevState.list]
+    
+            list.forEach(item => {
+                if(item.name === listName) {
+                    item.cards.push({
+                        front: front,
+                        back: back,
+                        nextRepetition: prevState.today,
+                        knowledgeLevel: 0
+                    })
+                }
+            })
+            
+            return ({
+                list: list
+            })
+        })
     }
 
     setLearningModal = (listName) => {
@@ -236,17 +81,14 @@ class App extends React.Component {
     }
 
     render() {
-        const date = new Date()
-
         const contextElement = {
             showModal: this.showModal,
             closeModal: this.closeModal,
             createCard: this.createCard,
             createList: this.createList,
             setLearningModal: this.setLearningModal,
-            
-            list: this.state.list,
-            today: date.toISOString().split('T')[0]
+
+            ...this.state
         }
 
         const allModals = [
@@ -279,10 +121,13 @@ class App extends React.Component {
                                 new list
                             </Button>
                         </div>
-                        <Table />
+                        <Table 
+                            cards={this.state.list.map(item => item.cards).flat()}
+                        />
                         {openModal &&
                             <Modal 
-                                {... openModal}
+                                title={openModal.title}
+                                name={openModal.name}
                             />
                         }
                         

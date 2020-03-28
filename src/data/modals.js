@@ -3,6 +3,7 @@ const modals = {
         open: false,
         title: 'learning mode',
         name: 'learningModal',
+        list: 'all',
         content: {
             topButtons: [],
             bottomButtons: [
@@ -10,7 +11,7 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () => this.closeModal(this.state.learningModal.name)
                 }
             ]
         }
@@ -26,12 +27,13 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () => this.closeModal(this.state.newCardModal.name)
                 },
                 {
                     active: true,
                     value: 'add',
-                    type: 'primary'
+                    type: 'primary',
+                    action: () => {console.log('todo action')}
                 }
             ]
         }
@@ -47,22 +49,25 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () => this.closeModal(this.state.updateCardModal.name)
                 },
                 {
                     active: true,
                     value: 'delete',
-                    type: 'danger'
+                    type: 'danger',
+                    action: () => {console.log('todo action')}
                 },
                 {
                     active: true,
                     value: 'reset progress',
-                    type: 'secondaryLight'
+                    type: 'secondaryLight',
+                    action: () => {console.log('todo action')}
                 },
                 {
                     active: true,
                     value: 'save',
-                    type: 'primary'
+                    type: 'primary',
+                    action: () => {console.log('todo action')}
                 },
             ]
         }
@@ -78,13 +83,13 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () => this.closeModal(this.state.newListModal.name)
                 },
                 {
                     active: true,
                     value: 'add',
                     type: 'primary',
-                    action: 'addNewList'
+                    action: () => {console.log('todo action')}
                 },
             ]
         }
@@ -100,12 +105,13 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () => this.closeModal(this.state.updateListModal.name)
                 },
                 {
                     active: true,
                     value: 'save',
-                    type: 'primary'
+                    type: 'primary',
+                    action: () => {console.log('todo action')}
                 },
             ]
         }
@@ -113,23 +119,26 @@ const modals = {
     listDetailsModal: {
         name: 'listDetailsModal',
         open: false,
-        title: 'list-details',
+        title: 'list details',
         content: {
             topButtons: [
                 {
                     active: true,
                     value: 'description',
-                    type: 'neutral'
+                    type: 'neutral',
+                    action: () => {console.log('todo action')}
                 },
                 {
                     active: true,
                     value: 'delete',
-                    type: 'danger'
+                    type: 'danger',
+                    action: () => {console.log('todo action')}
                 },
                 {
                     active: true,
                     value: 'edit',
-                    type: 'secondary'
+                    type: 'secondary',
+                    action: () => {console.log('todo action')}
                 },
             ],
             bottomButtons: [
@@ -137,20 +146,19 @@ const modals = {
                     active: true,
                     value: 'close',
                     type: 'neutral',
-                    action: 'closeModal'
+                    action: () =>  this.closeModal(this.state.listDetailsModal.name)
                 },
                 {
                     active: true,
                     value: 'new card',
                     type: 'primaryLight',
-                    action: 'showModal',
-                    action: () => this.showModal('updateListModal'),
+                    action: () => this.showModal(this.state.updateListModal.name),
                 },
                 {
                     active: true,
                     value: 'learn',
                     type: 'primary',
-                    action: ''
+                    action: () => {console.log('todo action')}
                 },
             ]
         }
