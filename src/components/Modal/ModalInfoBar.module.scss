@@ -1,0 +1,21 @@
+@import '../../variables.scss';
+
+.default {
+    margin: 0;
+    padding: .5em 1em;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: .8em;
+    border: 1px solid $colorDark;
+}
+
+.primary {
+    @extend .default;
+    background-color: $colorPrimaryLight;
+}
+
+.danger {
+    @extend .default;
+    background-color: $colorDanger;
+}

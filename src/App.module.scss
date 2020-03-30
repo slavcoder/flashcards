@@ -1,10 +1,16 @@
 @import './variables.scss';
 
+@keyframes curtain {
+    0%{opacity: 0}
+    100%{opacity: 1}
+}
+
 .main {
     width: 80%;
     max-width: 600px;
     margin: 0 auto;
     display: flex;
+    padding-bottom: 40px;
     justify-content: center;
     align-content: center;
     flex-direction: column;
@@ -20,5 +26,40 @@
     button {
         width: 200px;
         margin: 10px 0;
+        // padding: .8em .5em;
+        height: 50px;
+    }
+}
+
+.modalBackground {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        background-color: $colorBackground;
+        animation: curtain;
+        animation-duration: .3s;
+    }
+    
+    &:before {
+        transform-origin: center top;
+        top: 0;
+        left: 0;
+    }
+    
+    &:after {
+        transform-origin: center bottom;
+        bottom: 0;
+        right: 0;
     }
 }

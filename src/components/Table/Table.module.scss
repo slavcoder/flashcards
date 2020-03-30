@@ -1,0 +1,47 @@
+@import '../../variables.scss';
+
+.table {
+    color: $colorDark;
+    width: 100%;
+    margin: 50px 0 0 0;
+    padding: 0;
+    border-collapse: collapse;
+    
+    th {
+        border: 0;
+        font-weight: normal;
+        font-size: .8em;
+        font-weight: 500;
+    }
+
+    td {
+        border: 1px solid $colorDark;
+        padding: 0;
+        min-width: 70px;
+        // height: 65px;
+        text-align: center;
+    }
+
+    button {
+        width: 100%;
+        border: 0;
+        // height: 100%;
+        min-height: 50px;
+        font-weight: 500;
+        // padding: 0;
+    }
+
+
+    tr td:last-child {
+       font-size: .8em; 
+    }
+
+    tr:first-child td:last-child {
+       font-size: 1em; 
+    }
+}
+
+.name {
+    text-align: left;
+    padding-left: 10px;
+}

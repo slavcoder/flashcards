@@ -1,19 +1,16 @@
 import React from 'react';
+import ModalNewCard from './ModalNewCard'
 import AppContext from '../../context'
 
-class ModalUpdateCard extends React.Component {
-
-    render() {
-        return (
-            <>
-                <AppContext.Consumer>
-                    {context => (
-                        <h1>ModalUpdateCard</h1>
-                    )}
-                </AppContext.Consumer>
-            </>
-        )
-    }
-}
+const ModalUpdateCard = ({name}) => (
+    <AppContext.Consumer>
+        {(context => (
+            <ModalNewCard 
+                name={name} 
+                card={context.updateCardModal.card}
+            />
+        ))}
+    </AppContext.Consumer>
+)
 
 export default ModalUpdateCard

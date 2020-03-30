@@ -1,0 +1,23 @@
+@import '../../variables.scss';
+
+.learn {
+    background-color: $colorBackground;
+    font-weight: 500;
+    
+    button {
+        font-weight: 500;
+    }
+}
+
+.count {
+    font-weight: 500;
+}
+
+.name {
+
+    button {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: left;
+    }
+}

@@ -5,15 +5,14 @@ import Button from "./components/Button/Button";
 import Table from "./components/Table/Table";
 import Modal from "./components/Modal/Modal";
 import AppContext from './context';
-import data from './data/data'
+import card from './data/card'
+import list from './data/list'
 import modals from './data/modals'
-
-const date = new Date()
 
 class App extends React.Component {
     state = {
-        today: date.toISOString().split('T')[0],
-        list: data,
+        list: list,
+        card: card,
         ...modals
     }
 
@@ -43,31 +42,47 @@ class App extends React.Component {
         })
     }
     
-    createCard = ({listName, front, back}) => {
-        console.log('create card: ' + listName, front, back)
+    createCard = ({listId, front, back}) => {
+        const today = new Date()
 
-        
-        this.setState(prevState => {
-            const list = [...prevState.list]
-    
-            list.forEach(item => {
-                if(item.name === listName) {
-                    item.cards.push({
-                        front: front,
-                        back: back,
-                        nextRepetition: prevState.today,
-                        knowledgeLevel: 0
-                    })
-                }
-            })
-            
-            return ({
-                list: list
-            })
-        })
+        this.setState(prevState => ({
+            card: [...prevState.card, {
+                id: prevState.card[prevState.card.length-1].id + 1,
+                listId: Number(listId),
+                front: front,
+                back: back,
+                nextRepetition: today.toISOString(),
+                knowledgeLevel: 0
+            }]
+        }))
     }
 
-    setLearningModal = (listName) => {
+    createList = ({listName, description}) => {
+        this.setState(prevState => ({
+            list: [...prevState.list, {
+                id: prevState.list[prevState.list.length-1].id + 1,
+                name: listName,
+                description: description
+            }]
+        }))
+    }
+    
+    updateCard = ({id, listId, front, back, reset}) => {
+        let today = new Date()
+
+        this.setState(prevState => ({
+            card: prevState.card.map(el => el.id === id ? {
+                ...el,
+                listId: Number(listId),
+                front: front,
+                back: back,
+                nextRepetition: reset ? today.toISOString() : el.nextRepetition,
+                knowledgeLevel: reset ? 0 : el.knowledgeLevel
+            } : el)
+        }))
+    }
+
+    setLearning = (listName) => {
         console.log('learning :' + listName)
         
         this.setState(prevState => {
@@ -80,14 +95,49 @@ class App extends React.Component {
         })
     }
 
+    setListDetails = (listId) => {
+        listId = listId === 'all' ? listId : Number(listId)
+
+        this.setState(prevState => {
+            const modal = {...prevState.listDetailsModal}
+            modal.listId = listId
+            
+            return ({
+                listDetailsModal: modal
+            })
+        })
+    }
+
+    setUpdateCard = (card) => {
+        this.setState(prevState => {
+            const modal = {...prevState.updateCardModal}
+            modal.card = card
+            
+            return ({
+                updateCardModal: modal
+            })
+        })
+    }
+
+    nextRepetitionInDays = (cardNextRepetition) => {
+        const today = new Date()
+        const cardRepetitionDate = new Date(cardNextRepetition)
+        const daysDiff = Math.floor((cardRepetitionDate - today)/(1000*60*60*24))
+        return daysDiff
+    }
+
     render() {
+
         const contextElement = {
             showModal: this.showModal,
             closeModal: this.closeModal,
             createCard: this.createCard,
             createList: this.createList,
+            setListDetails: this.setListDetails,
             setLearningModal: this.setLearningModal,
-
+            nextRepetitionInDays: this.nextRepetitionInDays,
+            setUpdateCard: this.setUpdateCard,
+            updateCard: this.updateCard,
             ...this.state
         }
 
@@ -121,14 +171,15 @@ class App extends React.Component {
                                 new list
                             </Button>
                         </div>
-                        <Table 
-                            cards={this.state.list.map(item => item.cards).flat()}
-                        />
+                        <Table />
                         {openModal &&
-                            <Modal 
-                                title={openModal.title}
-                                name={openModal.name}
-                            />
+                            <>
+                                <div className={styles.modalBackground}></div>
+                                <Modal 
+                                    title={openModal.title}
+                                    name={openModal.name}
+                                />
+                            </>
                         }
                         
                     </main>

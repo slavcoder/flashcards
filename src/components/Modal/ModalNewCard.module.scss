@@ -1,0 +1,51 @@
+@import '../../variables.scss';
+
+.selectContainer {
+    display: flex;
+    margin-bottom: 15px;
+    font-size: .8em;
+    font-weight: 500;
+}
+
+.resetLabel {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 5px;
+    background-color: $colorSecondaryLight;
+    border: 1px solid darken($colorSecondary, 5%);
+    user-select: none;
+    
+    &:hover {
+        background-color: darken($colorSecondaryLight, 5%);
+    }
+
+    @media (max-width: 500px) {
+        justify-content: center;
+    }
+}
+
+.resetLabelDanger {
+    @extend .resetLabel;
+    background-color: $colorDanger;
+    border: 1px solid $colorDark;
+
+    &:hover {
+        background-color: darken($colorDanger, 5%);
+    }
+}
+
+.resetCheckbox {
+    margin-right: 1em;
+    opacity: .7;
+    background-color: #fff;
+    
+    &:checked,
+    &:hover,
+    &:focus {
+        opacity: 1;
+    }
+}

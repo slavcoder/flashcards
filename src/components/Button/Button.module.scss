@@ -6,6 +6,7 @@
     border: 1px solid $colorDark;
     cursor: pointer;
     transition: .2s;
+    width: 150px;
 }
 
 .primary {
@@ -15,6 +16,16 @@
     &:hover,
     &:focus {
         background-color: darken($colorPrimary, 15%);
+    }
+}
+
+.primaryLight {
+    @extend .button;
+    background-color: $colorPrimaryLight;
+
+    &:hover,
+    &:focus {
+        background-color: darken($colorPrimaryLight, 15%);
     }
 }
 
@@ -35,5 +46,35 @@
     &:hover,
     &:focus {
         background-color: lighten($colorSecondaryLight, 15%);
+    }
+}
+
+.danger {
+    @extend .button;
+    background-color: $colorDanger;
+    
+    &:hover,
+    &:focus {
+        background-color: darken($colorDanger, 10%);
+    }
+}
+
+.neutral {
+    @extend .button;
+    background-color: $colorBackground;
+    
+    &:hover,
+    &:focus {
+        background-color: darken($colorBackground, 10%);
+    }
+}
+
+.neutralLight {
+    @extend .button;
+    background-color: white;
+    
+    &:hover,
+    &:focus {
+        background-color: lighten($colorPrimaryLight, 5%);
     }
 }

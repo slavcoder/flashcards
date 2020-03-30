@@ -1,0 +1,26 @@
+@import "../../variables.scss";
+
+.input {
+    background-color: white;
+    color: $colorDark;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $colorDark;
+    margin-bottom: 15px;
+    resize: none;
+
+    &:required {
+        // border: 0;
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+.textarea {
+    @extend .input;
+    min-height: 150px;
+    
+    @media (max-width: 600px) {
+        min-height: 100px;
+    }
+}

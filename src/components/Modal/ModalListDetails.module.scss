@@ -1,0 +1,139 @@
+@import '../../variables.scss';
+
+.selectContainer {
+    display: flex;
+    margin-top: 15px;
+    font-size: .8em;
+    font-weight: 500;
+}
+
+.countContainer {
+    display: flex;
+    font-size: .8em;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.countTitle {
+    width: 200px;
+    max-width: 50%;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 10px;
+    background-color: $colorPrimary;
+    border-bottom: 1px solid $colorDark;
+    border-left: 1px solid $colorDark;
+}
+
+.count {
+    border: 1px solid $colorDark;
+    border-top: 0;
+    width: 100%;
+    padding: 10px 1.3em;
+    background-color: $colorPrimaryLight;
+}
+
+.tableContainer {
+    max-height: 250px;
+    overflow: auto;
+    margin-bottom:25px;
+    border-top: 1px solid $colorDark;
+    border-bottom: 1px solid $colorDark;
+    
+    @media (min-width: 650px) {
+        max-height: 450px;
+    }
+}
+
+.table {
+    color: $colorDark;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    font-size: .8em;
+
+    td,
+    th {
+        border: 1px solid $colorDark;
+        height: 2em;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    
+    tr {
+        &:first-child th{
+            border-top: 0;
+        }
+
+        &:last-child td{
+            border-bottom: 0;
+        }
+    }
+}
+
+.tableQuestionTitle {
+    text-align: left;
+    padding-left: 1em;
+}
+
+.tableRepetitionTitle {
+    text-align: center;
+    background-color: $colorSecondaryLight;
+}
+
+.tableQuestion {
+    background-color: white;
+    width: auto;
+
+    button {
+        width: 100%;
+        border: 0;
+        height: auto;
+        font-weight: normal;
+        padding-left: 1em;
+        text-align: left;
+    }
+}
+
+.tableRepetition {
+    text-align: center;
+    width: 30%;
+    padding: 0 10px;
+}
+
+.repetitionPrimary {
+    @extend .tableRepetition;
+    background-color: darken($colorPrimary, 5%);
+}
+.repetitionPrimaryLight{
+    @extend .tableRepetition;
+    background-color: lighten($colorPrimary, 2%);
+}
+.repetitionPrimaryLighter{
+    @extend .tableRepetition;
+    background-color: lighten($colorPrimary, 7%);
+}
+.repetitionPrimaryDeepLight{
+    @extend .tableRepetition;
+    background-color: lighten($colorPrimary, 12%);
+}
+.repetitionPrimaryDeepLighter{
+    @extend .tableRepetition;
+    background-color: lighten($colorPrimary, 15%);
+}
+.repetitionNeutral{
+    @extend .tableRepetition;
+    background-color: $colorNeutral;
+    color: rgba($colorDark, .8);
+}
+.repetitionNeutralLight{
+    @extend .tableRepetition;
+    background-color: lighten($colorNeutral, 2%);
+    color: rgba($colorDark, .7);
+}
+.repetitionNeutralLighter{
+    @extend .tableRepetition;
+    background-color: lighten($colorNeutral, 3%);
+    color: rgba($colorDark, .6);
+}

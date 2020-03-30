@@ -19,9 +19,7 @@ const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
                     {learn}
                 </Button>
             ) : (
-                <span
-                    className={styles.zeroToLearn}
-                >
+                <span>
                     {learn}
                 </span>
             )}

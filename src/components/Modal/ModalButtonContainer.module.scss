@@ -1,0 +1,18 @@
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        margin-left: 10px;
+    }
+    
+    @media (max-width: 500px) {
+        flex-wrap: wrap;
+    
+        button {
+            margin-left: 0;
+            margin-bottom: 10px;
+            width: 100%;
+        }    
+    }
+}

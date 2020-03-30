@@ -3,9 +3,7 @@ import styles from "./Table.module.scss";
 import Row from './Row'
 import AppContext from '../../context'
 
-const Table = ({cards}) => {
-    console.log(cards)
-
+const Table = () => {
     return (
         <>
             <AppContext.Consumer>
@@ -13,13 +11,15 @@ const Table = ({cards}) => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <td>learn</td><td>count</td><td>name</td>
+                                <th>learn</th><th>count</th><th className={styles.name}>name</th>
                             </tr>
                         </thead>
                         <tbody>
                             <Row
-                                learn={cards.filter(el => el.nextRepetition === context.today).length}
-                                count={cards.length}
+                                learn={context.card.filter(el => {
+                                    return context.nextRepetitionInDays(el.nextRepetition) <= 0
+                                }).length}
+                                count={context.card.length}
                                 name='all'
                                 type='default'
                                 learnFn={() => {
@@ -27,26 +27,32 @@ const Table = ({cards}) => {
                                     context.showModal('learningModal')
                                 }}
                                 showListDetailsFn={() => {
-                                    context.setLearningModal('all')
+                                    context.setListDetails('all')
                                     context.showModal('listDetailsModal')
                                 }}
                             />
-                            {context.list.map((list, index) => (
-                                <Row
-                                    key={index}
-                                    learn={list.cards.filter(el => el.nextRepetition === context.today).length}
-                                    count={list.cards.length}
-                                    name={list.name}
-                                    learnFn={() => {
-                                        context.setLearningModal(list.name)
-                                        context.showModal('learningModal')
-                                    }}
-                                    showListDetailsFn={() => {
-                                        context.setLearningModal(list.name)
-                                        context.showModal('listDetailsModal')
-                                    }}
-                                />
-                            ))}
+                            {context.list.map((list, index) => {
+                                const listCards = context.card.filter(el => el.listId === list.id)
+                                
+                                return (
+                                    <Row
+                                        key={index}
+                                        learn={listCards.filter(el => {
+                                            return context.nextRepetitionInDays(el.nextRepetition) <= 0
+                                        }).length}
+                                        count={listCards.length}
+                                        name={list.name}
+                                        learnFn={() => {
+                                            context.setLearningModal(list.name)
+                                            context.showModal('learningModal')
+                                        }}
+                                        showListDetailsFn={() => {
+                                            context.setListDetails(list.id)
+                                            context.showModal('listDetailsModal')
+                                        }}
+                                    />
+                                )
+                            })}
                         </tbody>
                     </table>
                 )}

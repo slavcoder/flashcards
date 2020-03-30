@@ -1,0 +1,49 @@
+@import '../../variables.scss';
+
+@keyframes slideIn {
+    0%{transform: translateY(-45%); opacity: 0;}
+    100%{transform: translateY(-50%); opacity: 1;}
+}
+
+.modal {
+    width: 90%;
+    max-width: 700px;
+    background-color: $colorBackground;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    border: 1px solid $colorDark;
+    z-index: 4;
+    color: $colorDark;
+    opacity: 0;
+    animation: slideIn;
+    animation-duration: .3s;
+    animation-delay: .3s;
+    animation-fill-mode: forwards;
+}
+
+.title {
+    margin: 0;
+    padding: .4em;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid $colorDark;
+    font-size: 1.3em;
+}
+
+.titlePrimary {
+    @extend .title;
+    background-color: $colorPrimary;
+}
+
+.titleSecondary {
+    @extend .title;
+    background-color: $colorSecondary;
+}
+
+.box {
+    padding: 30px 25px;
+}

@@ -1,0 +1,42 @@
+@import '../../variables.scss';
+
+.label {
+    background-color: $colorSecondary;
+    border: 1px solid $colorDark;
+    border-right: 0;
+    width: 200px;
+    max-width: 50%;
+    text-align: center;
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.select {
+    font-weight: 500;
+    width: 100%;
+    background-color: $colorSecondaryLight;
+    border: 0;
+    padding: 0 1em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    line-height: 1em;
+    display: block;
+    border: 1px solid $colorDark;
+    cursor: pointer;
+    transition: .2s;
+    overflow: hidden;
+    white-space: pre;
+    text-overflow: ellipsis;
+
+    &:hover,
+    &:focus {
+        background-color: lighten($colorSecondaryLight, 10%);
+    }
+}
+
+.option {
+    &:checked {
+        background-color: $colorSecondary;
+    }
+}
