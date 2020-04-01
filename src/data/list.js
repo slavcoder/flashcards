@@ -1,5 +1,3 @@
-// name max 40 chars
-
 const list = [
     {
         id: 1,

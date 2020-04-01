@@ -38,6 +38,3 @@ class Checkbox extends React.Component {
 }
 
 export default Checkbox
-
-
-// className={styles[this.state.reset ? 'resetLabelDanger' : 'resetLabel']}

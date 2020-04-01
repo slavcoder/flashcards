@@ -1,0 +1,68 @@
+@import '../../variables.scss';
+
+.heading {
+    margin: 40px 0 0 0;
+    font-size: 1.4em;
+    background-color: $colorSecondary;
+    width: 100%;
+    color: $colorDark;
+    text-align: center;
+    padding: .2em;
+}
+
+.testModeInfoBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $colorSecondaryLight;
+    padding: 10px 5px;
+    text-align: center;
+    color: $colorDark;
+    margin: 0;
+    border: 1px solid $colorSecondary;
+
+    button {
+        width: 200px;
+        margin: 10px 0;
+        height: 50px;
+    }
+
+    p {
+        font-size: .8em;
+        margin: .5em;
+    }
+}
+
+.bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+    color: $colorDark;
+    background-color: $colorSecondary;
+    z-index: 20;
+    margin: 0;
+    text-align: center;
+    border-top: 1px solid $colorDark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.barButton {
+    margin-left: 10px;
+    border: 1px solid $colorDark;
+    color: $colorDark;
+    background-color: white;
+    cursor: pointer;
+    transition: .2s;
+    font-size: .8em;
+    padding: .2em .4em;
+
+    &:hover,
+    &:focus {
+        background-color: $colorSecondaryLight;
+    }
+}

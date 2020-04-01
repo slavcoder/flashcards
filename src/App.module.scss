@@ -11,9 +11,9 @@
     margin: 0 auto;
     display: flex;
     padding-bottom: 40px;
-    justify-content: center;
-    align-content: center;
+    justify-content: flex-start;
     flex-direction: column;
+    min-height: calc(100vh - 280px);
 }
 
 .buttonsContainer {
@@ -26,7 +26,6 @@
     button {
         width: 200px;
         margin: 10px 0;
-        // padding: .8em .5em;
         height: 50px;
     }
 }
@@ -63,3 +62,10 @@
         right: 0;
     }
 }
+
+.testModeInfo {
+    background-color: $colorSecondaryLight;
+    padding: 5px;
+    text-align: center;
+}
+

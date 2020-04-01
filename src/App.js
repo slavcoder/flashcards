@@ -4,15 +4,21 @@ import Header from "./components/Header/Header";
 import Button from "./components/Button/Button";
 import Table from "./components/Table/Table";
 import Modal from "./components/Modal/Modal";
+import Footer from "./components/Footer/Footer";
+import TestMode from "./components/TestMode/TestMode";
 import AppContext from './context';
-import card from './data/card'
-import list from './data/list'
 import modals from './data/modals'
+import { testText } from './data/testData'
+import data from './data/data'
+
+const list = data.get('list')
+const card = data.get('card')
 
 class App extends React.Component {
     state = {
         list: list,
         card: card,
+        testMode: false,
         ...modals
     }
 
@@ -39,7 +45,7 @@ class App extends React.Component {
             card: [
                 ...prevState.card, 
                 {
-                    id: prevState.card[prevState.card.length-1].id + 1,
+                    id: prevState.card.length ? prevState.card[prevState.card.length-1].id + 1 : 1,
                     listId: Number(listId),
                     front: front,
                     back: back,
@@ -47,7 +53,7 @@ class App extends React.Component {
                     knowledgeLevel: 0
                 }
             ]
-        }))
+        }), () => this.saveChanges('card'))
     }
 
     createList = ({listName, description}) => {
@@ -55,12 +61,12 @@ class App extends React.Component {
             list: [
                 ...prevState.list, 
                 {
-                    id: prevState.list[prevState.list.length-1].id + 1,
+                    id: prevState.list.length ? prevState.list[prevState.list.length-1].id + 1 : 1,
                     name: listName,
                     description: description
                 }
             ]
-        }))
+        }), () => this.saveChanges('list'))
     }
     
     updateCard = ({id, listId, front, back, reset}) => {
@@ -76,7 +82,8 @@ class App extends React.Component {
                 nextRepetition: reset ? today.toISOString() : el.nextRepetition,
                 knowledgeLevel: reset ? 0 : el.knowledgeLevel
             } : el)
-        }))
+        }), () => this.saveChanges('card'))
+
     }
 
     updateList = ({listName, description, id}) => {
@@ -88,7 +95,7 @@ class App extends React.Component {
                 name: listName,
                 description: description
             }: el)
-        }))
+        }), () => this.saveChanges('list'))
     }
 
     setModal = ({modal, key, value}) => {
@@ -112,7 +119,7 @@ class App extends React.Component {
 
         this.setState(prevState => ({
             card: prevState.card.filter(el => el.id !== id)
-        }))
+        }), () => this.saveChanges('card'))
     }
 
     deleteList = (listId) => {
@@ -121,7 +128,90 @@ class App extends React.Component {
         this.setState(prevState => ({
             list: prevState.list.filter(el => el.id !== listId),
             card: prevState.card.filter(el => el.listId !== listId)
-        }))
+        }), () => {
+            this.saveChanges('list')
+            this.saveChanges('card')
+        })
+    }
+
+    testCards = (amount) => {
+        if(!this.state.list.length) return
+        const newCards = []
+        const startId = this.state.card.length ? this.state.card[this.state.card.length-1].id : 1
+        const listIdArr = this.state.list.map(el => el.id)
+        const listIdArrLength = listIdArr.length
+        const textArr = testText.split('. ').filter(el => el.trim().length)
+        const textArrLength = textArr.length
+
+        for(let i = 1; i <= amount; i++) {
+            newCards.push({
+                id: startId+i,
+                listId: listIdArr[Math.floor(Math.random() * (listIdArrLength))],
+                front: textArr[Math.floor(Math.random() * textArrLength)],
+                back: textArr[Math.floor(Math.random() * textArrLength)],
+                nextRepetition: `202${Math.floor(Math.random()*3)}-${Math.floor((Math.random()*12)+1)}-${Math.floor((Math.random()*28)+1)}`,
+                knowledgeLevel: 0
+            })
+        }
+
+        console.log(`added ${amount} cards`)
+        // console.log(newCards)
+
+        this.setState(prevState => ({
+            card: [
+                ...prevState.card,
+                ...newCards
+            ]
+        }), () => this.saveChanges('card'))
+    }
+
+    testList = () => {
+        const textArr = testText.split('. ').filter(el => el.trim().length)
+        const description = textArr[Math.floor(Math.random() * textArr.length)]
+        const listName = description.split(' ')[0]
+
+        this.setState(prevState => ({
+            list: [
+                ...prevState.list, 
+                {
+                    id: prevState.list.length ? prevState.list[prevState.list.length-1].id + 1 : 1,
+                    name: listName,
+                    description: description
+                }
+            ]
+        }), () => this.saveChanges('list'))
+    }
+
+    toggleTestMode = () => {
+        this.setState(prevState => ({
+            testMode: !prevState.testMode
+        }), () => {
+            if(!this.state.testMode) {
+                this.closeModal('learningModal')
+                this.closeModal('newCardModal')
+                this.closeModal('updateCardModal')
+                this.closeModal('newListModal')
+                this.closeModal('updateListModal')
+                this.closeModal('listDetailsModal')
+                this.loadLastSave()
+            }
+        })
+    }
+
+    saveChanges = (name) => {
+        if(!this.state.testMode) {
+            data.set(name, [...this.state[name]])
+        }
+    }
+
+    loadLastSave = () => {
+        const card = data.get('card')
+        const list = data.get('list')
+
+        this.setState({
+            card: card,
+            list: list,
+        })
     }
 
     render() {
@@ -149,12 +239,16 @@ class App extends React.Component {
             this.state.listDetailsModal
         ]
 
+        const {testMode} = this.state
+
         const openModal = allModals.find(el => el.open)
 
         return (
             <>
                 <AppContext.Provider value={contextElement}>
-                    <Header />
+                    <Header 
+                        onLoad={() => this.showModal('newCardModal')}
+                    />
                     <main className={styles.main}>
                         <div className={styles.buttonsContainer}>
                             <Button
@@ -188,8 +282,18 @@ class App extends React.Component {
                             </>
                         }
 
+                        {testMode && (
+                            <TestMode 
+                                testCardsFn={this.testCards}
+                                testListFn={this.testList}
+                                toggleTestModeFn={this.toggleTestMode}
+                            />
+                        )}
                     </main>
-                    <footer className={styles.footer}></footer>
+                    <Footer 
+                        testMode={testMode}
+                        toggleTestModeFn={this.toggleTestMode}
+                    />
                 </AppContext.Provider>
             </>
         );
