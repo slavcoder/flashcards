@@ -16,58 +16,55 @@ class App extends React.Component {
         ...modals
     }
 
-    showModal = (modalName) => {
-        console.log('show modal: ' + modalName)
-
-        this.setState(prevState => {
-            const modal = {...prevState[modalName]}
-            modal.open = true
-
-            return ({
-                [modalName]: modal
-            })
-        })
-    }
-
-    closeModal = (modalName) => {
-        console.log('close modal: ' + modalName)
-        
-        this.setState(prevState => {
-            const modal = {...prevState[modalName]}
-            modal.open = false
-            
-            return ({
-                [modalName]: modal
-            })
+    showModal = (modal) => {
+        this.setModal({
+            modal: modal,
+            key: 'open',
+            value: true
         })
     }
     
+    closeModal = (modal) => {
+        this.setModal({
+            modal: modal,
+            key: 'open',
+            value: false
+        })
+    }
+
     createCard = ({listId, front, back}) => {
         const today = new Date()
 
         this.setState(prevState => ({
-            card: [...prevState.card, {
-                id: prevState.card[prevState.card.length-1].id + 1,
-                listId: Number(listId),
-                front: front,
-                back: back,
-                nextRepetition: today.toISOString(),
-                knowledgeLevel: 0
-            }]
+            card: [
+                ...prevState.card, 
+                {
+                    id: prevState.card[prevState.card.length-1].id + 1,
+                    listId: Number(listId),
+                    front: front,
+                    back: back,
+                    nextRepetition: today.toISOString(),
+                    knowledgeLevel: 0
+                }
+            ]
         }))
     }
 
     createList = ({listName, description}) => {
         this.setState(prevState => ({
-            list: [...prevState.list, {
-                id: prevState.list[prevState.list.length-1].id + 1,
-                name: listName,
-                description: description
-            }]
+            list: [
+                ...prevState.list, 
+                {
+                    id: prevState.list[prevState.list.length-1].id + 1,
+                    name: listName,
+                    description: description
+                }
+            ]
         }))
     }
     
     updateCard = ({id, listId, front, back, reset}) => {
+        if(!listId) return
         let today = new Date()
 
         this.setState(prevState => ({
@@ -82,41 +79,25 @@ class App extends React.Component {
         }))
     }
 
-    setLearning = (listName) => {
-        console.log('learning :' + listName)
-        
-        this.setState(prevState => {
-            const modal = {...prevState.learningModal}
-            modal.list = listName
-            
-            return ({
-                learningModal: modal
-            })
-        })
+    updateList = ({listName, description, id}) => {
+        if(!id) return
+
+        this.setState(prevState => ({
+            list: prevState.list.map(el => el.id === id ? {
+                ...el,
+                name: listName,
+                description: description
+            }: el)
+        }))
     }
 
-    setListDetails = (listId) => {
-        listId = listId === 'all' ? listId : Number(listId)
-
-        this.setState(prevState => {
-            const modal = {...prevState.listDetailsModal}
-            modal.listId = listId
-            
-            return ({
-                listDetailsModal: modal
-            })
-        })
-    }
-
-    setUpdateCard = (card) => {
-        this.setState(prevState => {
-            const modal = {...prevState.updateCardModal}
-            modal.card = card
-            
-            return ({
-                updateCardModal: modal
-            })
-        })
+    setModal = ({modal, key, value}) => {
+        this.setState(prevState => ({
+            [modal]: {
+                ...prevState[modal],
+                [key]: value
+            }
+        }))
     }
 
     nextRepetitionInDays = (cardNextRepetition) => {
@@ -126,18 +107,36 @@ class App extends React.Component {
         return daysDiff
     }
 
+    deleteCard = (id) => {
+        console.log('delete card: ' + id)
+
+        this.setState(prevState => ({
+            card: prevState.card.filter(el => el.id !== id)
+        }))
+    }
+
+    deleteList = (listId) => {
+        console.log('delete list: ' + listId)
+
+        this.setState(prevState => ({
+            list: prevState.list.filter(el => el.id !== listId),
+            card: prevState.card.filter(el => el.listId !== listId)
+        }))
+    }
+
     render() {
 
         const contextElement = {
             showModal: this.showModal,
             closeModal: this.closeModal,
             createCard: this.createCard,
-            createList: this.createList,
-            setListDetails: this.setListDetails,
-            setLearningModal: this.setLearningModal,
-            nextRepetitionInDays: this.nextRepetitionInDays,
-            setUpdateCard: this.setUpdateCard,
             updateCard: this.updateCard,
+            createList: this.createList,
+            updateList: this.updateList,
+            setModal: this.setModal,
+            nextRepetitionInDays: this.nextRepetitionInDays,
+            deleteCard: this.deleteCard,
+            deleteList: this.deleteList,
             ...this.state
         }
 
@@ -160,7 +159,14 @@ class App extends React.Component {
                         <div className={styles.buttonsContainer}>
                             <Button
                                 type='primary'
-                                onClick={() => this.showModal('newCardModal')}
+                                onClick={() => {
+                                    this.setModal({
+                                        modal: 'newCardModal',
+                                        key: 'listId',
+                                        value: false
+                                    })
+                                    this.showModal('newCardModal')
+                                }}
                             >
                                 new card
                             </Button>
@@ -172,16 +178,16 @@ class App extends React.Component {
                             </Button>
                         </div>
                         <Table />
+
                         {openModal &&
                             <>
                                 <div className={styles.modalBackground}></div>
                                 <Modal 
-                                    title={openModal.title}
-                                    name={openModal.name}
+                                    {...openModal}
                                 />
                             </>
                         }
-                        
+
                     </main>
                     <footer className={styles.footer}></footer>
                 </AppContext.Provider>

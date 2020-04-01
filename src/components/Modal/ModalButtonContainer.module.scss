@@ -4,15 +4,24 @@
 
     button {
         margin-left: 10px;
-    }
-    
-    @media (max-width: 500px) {
-        flex-wrap: wrap;
-    
-        button {
+
+        &:first-child {
             margin-left: 0;
-            margin-bottom: 10px;
-            width: 100%;
-        }    
+        }
     }
+    
+    // @media (max-width: 500px) {
+    //     flex-wrap: wrap;
+    
+    //     button {
+    //         margin-left: 0;
+    //         margin-bottom: 10px;
+    //         width: 100%;
+    //     }
+    // }
+}
+
+.bottomSpace {
+    @extend .buttonContainer;
+    margin-bottom: 15px;
 }

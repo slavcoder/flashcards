@@ -1,93 +1,39 @@
 const modals = {
     learningModal: {
         open: false,
-        title: 'learning mode',
         name: 'learningModal',
-        list: 'all',
-        // content: {
-        //     topButtons: [],
-        //     bottomButtons: [
-        //         {
-        //             active: true,
-        //             value: 'close',
-        //             type: 'neutral',
-        //             action: () => this.closeModal(this.state.learningModal.name)
-        //         }
-        //     ]
-        // }
+        title: 'learning mode',
+        listId: 'all',
     },
     newCardModal: {
-        name: 'newCardModal',
         open: false,
+        name: 'newCardModal',
         title: 'new card',
+        listId: false
     },
     updateCardModal: {
-        name: 'updateCardModal',
         open: false,
+        name: 'updateCardModal',
         title: 'update card',
         card: false
-        // content: {
-        //     topButtons: [],
-        //     bottomButtons: [
-        //         {
-        //             active: true,
-        //             value: 'close',
-        //             type: 'neutral',
-        //             action: () => this.closeModal(this.state.updateCardModal.name)
-        //         },
-        //         {
-        //             active: true,
-        //             value: 'delete',
-        //             type: 'danger',
-        //             action: () => {console.log('todo action')}
-        //         },
-        //         {
-        //             active: true,
-        //             value: 'reset progress',
-        //             type: 'secondaryLight',
-        //             action: () => {console.log('todo action')}
-        //         },
-        //         {
-        //             active: true,
-        //             value: 'save',
-        //             type: 'primary',
-        //             action: () => {console.log('todo action')}
-        //         },
-        //     ]
-        // }
     },
     newListModal: {
-        name: 'newListModal',
         open: false,
+        name: 'newListModal',
         title: 'new list'
     },
     updateListModal: {
-        name: 'updateListModal',
         open: false,
+        name: 'updateListModal',
         title: 'update list',
-        // content: {
-        //     topButtons: [],
-        //     bottomButtons: [
-        //         {
-        //             active: true,
-        //             value: 'close',
-        //             type: 'neutral',
-        //             action: () => this.closeModal(this.state.updateListModal.name)
-        //         },
-        //         {
-        //             active: true,
-        //             value: 'save',
-        //             type: 'primary',
-        //             action: () => {console.log('todo action')}
-        //         },
-        //     ]
-        // }
+        list: false
     },
     listDetailsModal: {
-        name: 'listDetailsModal',
         open: false,
+        name: 'listDetailsModal',
         title: 'list details',
-        listId: 'all'
+        listId: 'all',
+        showMore: false
     }
 }
 

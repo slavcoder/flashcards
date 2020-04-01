@@ -7,8 +7,9 @@ import ModalButtonContainer from './ModalButtonContainer';
 
 class ModalNewList extends React.Component {
     state = {
-        listName: '',
-        description: ''
+        listName: this.props.list ? this.props.list.name : '',
+        description: this.props.list ? this.props.list.description : '',
+        id: this.props.list ? this.props.list.id : false
     }
 
     updateValue = (e) => {
@@ -19,6 +20,7 @@ class ModalNewList extends React.Component {
 
     render() {
         const {listName, description} = this.state
+        const {name} = this.props
 
         return (
             <>
@@ -29,8 +31,13 @@ class ModalNewList extends React.Component {
                             action=""
                             onSubmit={e => {
                                 e.preventDefault()
-                                context.createList(this.state)
-                                context.closeModal(this.props.name)
+                                if(name === 'newListModal') {
+                                    context.createList(this.state)
+                                }
+                                else {
+                                    context.updateList(this.state)
+                                }
+                                context.closeModal(name)
                             }}
                         >
                             <ModalInput 
@@ -52,7 +59,7 @@ class ModalNewList extends React.Component {
                                     type='neutral'
                                     onClick={e => {
                                         e.preventDefault()
-                                        context.closeModal(this.props.name)
+                                        context.closeModal(name)
                                     }}
                                 >
                                     close
@@ -60,7 +67,7 @@ class ModalNewList extends React.Component {
                                 <Button 
                                     type='primary'
                                 >
-                                    add
+                                    {name === 'updateListModal' ? 'save' : 'add'}
                                 </Button>
                             </ModalButtonContainer>
                         </form>

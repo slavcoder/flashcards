@@ -2,7 +2,6 @@
 
 .selectContainer {
     display: flex;
-    margin-top: 15px;
     font-size: .8em;
     font-weight: 500;
 }
@@ -136,4 +135,27 @@
     @extend .tableRepetition;
     background-color: lighten($colorNeutral, 3%);
     color: rgba($colorDark, .6);
+}
+
+.listDescription {
+    background-color: #fff;
+    border: 1px solid $colorDark;
+    margin-bottom: 25px;
+}
+.listDescriptionTitle {
+    margin: 0;
+    background-color: $colorSecondaryLight;
+    padding: 10px;
+    border-bottom: 1px solid $colorDark;
+}
+.listDescriptionName {
+    padding: 10px;
+    background-color: lighten($colorSecondaryLight, 10%);
+    border-bottom: 1px solid $colorDark;
+    margin: 0;
+    
+}
+.listDescriptionContent {
+    padding: 10px;
+    margin: 0;
 }
