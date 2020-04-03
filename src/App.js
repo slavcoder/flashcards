@@ -107,6 +107,86 @@ class App extends React.Component {
         }))
     }
 
+    startLearning = (listId) => {
+        console.log(listId)
+        const allCards = this.state.card.filter(el => listId === 'all' ? el : el.listId === listId)
+        const cardsToLearn = allCards.filter(el => this.nextRepetitionInDays(el.nextRepetition) <= 0)
+        cardsToLearn.forEach(el => el.hardCount = 1)
+        
+        this.setState(prevState => ({
+            learningModal: {
+                ...prevState.learningModal,
+                listId: listId,
+                open: true,
+                card: cardsToLearn
+            }
+        }))
+    }
+
+    handleCard = (level, card) => {
+        // level: hard/medium/easy
+        const cardList = [...this.state.learningModal.card]
+        console.log('handleCard')
+        console.log(cardList)
+
+        if(level === 'hard') {
+            card.hardCount++
+            cardList.shift()
+            cardList.push(card)
+
+            this.setModal({
+                modal: 'learningModal',
+                key: 'card',
+                value: cardList
+            })
+
+        } else if(level === 'medium') {
+            cardList.shift()
+            const today = new Date()
+            const days = card.knowledgeLevel === 0 ? 2:
+                         card.knowledgeLevel === 1 ? Math.floor(Math.random() * 3) + 1 :
+                         card.knowledgeLevel === 2 ? Math.floor(Math.random() * 7) + 3 :
+                         Math.floor(Math.random() * 5) + 10
+
+            const nextRepetition = new Date(today.getTime() + Math.floor(days / card.hardCount) * 24 * 60 * 60 * 1000)
+
+            this.setState(prevState => ({
+                card: prevState.card.map(el => el.id === card.id ? {
+                    ...el,
+                    nextRepetition: nextRepetition.toISOString(),
+                } : el),
+                learningModal: {
+                    ...prevState.learningModal,
+                    card: cardList
+                }
+            }), () => this.saveChanges('card'))
+
+        } else {
+            cardList.shift()
+            const today = new Date()
+            const days = card.knowledgeLevel === 0 ? 2:
+                         card.knowledgeLevel === 1 ? Math.floor(Math.random() * 5) + 5 :
+                         card.knowledgeLevel === 2 ? Math.floor(Math.random() * 10) + 25 :
+                         card.knowledgeLevel === 3 ? Math.floor(Math.random() * 20) + 80 :
+                         card.knowledgeLevel === 4 ? Math.floor(Math.random() * 30) + 340 :
+                         Math.floor(Math.random() * 365) + 365
+
+            const nextRepetition = new Date(today.getTime() + Math.floor(days / card.hardCount) * 24 * 60 * 60 * 1000)
+
+            this.setState(prevState => ({
+                card: prevState.card.map(el => el.id === card.id ? {
+                    ...el,
+                    nextRepetition: nextRepetition.toISOString(),
+                    knowledgeLevel: el.knowledgeLevel + 1,
+                } : el),
+                learningModal: {
+                    ...prevState.learningModal,
+                    card: cardList
+                }
+            }), () => this.saveChanges('card'))
+        }
+    }
+
     nextRepetitionInDays = (cardNextRepetition) => {
         const today = new Date()
         const cardRepetitionDate = new Date(cardNextRepetition)
@@ -150,7 +230,7 @@ class App extends React.Component {
                 front: textArr[Math.floor(Math.random() * textArrLength)],
                 back: textArr[Math.floor(Math.random() * textArrLength)],
                 nextRepetition: `202${Math.floor(Math.random()*3)}-${Math.floor((Math.random()*12)+1)}-${Math.floor((Math.random()*28)+1)}`,
-                knowledgeLevel: 0
+                knowledgeLevel: Math.floor(Math.random()*5)
             })
         }
 
@@ -215,7 +295,6 @@ class App extends React.Component {
     }
 
     render() {
-
         const contextElement = {
             showModal: this.showModal,
             closeModal: this.closeModal,
@@ -227,6 +306,8 @@ class App extends React.Component {
             nextRepetitionInDays: this.nextRepetitionInDays,
             deleteCard: this.deleteCard,
             deleteList: this.deleteList,
+            startLearning: this.startLearning,
+            handleCard: this.handleCard,
             ...this.state
         }
 

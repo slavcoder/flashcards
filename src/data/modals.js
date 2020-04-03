@@ -4,6 +4,7 @@ const modals = {
         name: 'learningModal',
         title: 'learning mode',
         listId: 'all',
+        card: []
     },
     newCardModal: {
         open: false,
@@ -33,7 +34,8 @@ const modals = {
         name: 'listDetailsModal',
         title: 'list details',
         listId: 'all',
-        showMore: false
+        showMore: false,
+        scrollTop: 0
     }
 }
 

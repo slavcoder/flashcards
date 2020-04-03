@@ -9,8 +9,21 @@ import DeleteConfirmForm from './DeleteConfirmForm';
 class ModalListDetails extends React.Component {
 
     state = {
-        showMore: this.props.showMore,
         showDeleteConfirmForm: false
+    }
+
+    scrollContainer = React.createRef()
+
+    componentDidMount = () => {
+        if(!this.props.showMore) this.setTableScroll()
+    }
+
+    componentDidUpdate = () => {
+        if(!this.props.showMore) this.setTableScroll()
+    }
+
+    setTableScroll = () => {
+        this.scrollContainer.current.scrollTop = this.props.scrollTop
     }
 
     nextRepetition = (days, getColor) => {
@@ -73,6 +86,11 @@ class ModalListDetails extends React.Component {
                                         cardsCount={context.card.filter(el => el.listId === listId).length}
                                         confirmFn={() => {
                                             this.showDeleteConfirmForm(false)
+                                            context.setModal({
+                                                modal: name,
+                                                key: 'scrollTop',
+                                                value: 0
+                                            })
                                             context.setModal({
                                                 modal: name,
                                                 key: 'showMore',
@@ -147,11 +165,18 @@ class ModalListDetails extends React.Component {
                                     listArray={context.list}
                                     defaultValue={listId}
                                     showAll={true}
-                                    onChangeFn={e => {context.setModal({
-                                        modal: name,
-                                        key: 'listId',
-                                        value: e.target.value === 'all' ? e.target.value : Number(e.target.value)
-                                    })}}
+                                    onChangeFn={e => {
+                                        context.setModal({
+                                            modal: name,
+                                            key: 'scrollTop',
+                                            value: 0
+                                        })
+                                        context.setModal({
+                                            modal: name,
+                                            key: 'listId',
+                                            value: e.target.value === 'all' ? e.target.value : Number(e.target.value)
+                                        })
+                                    }}
                                 />
                             </div>
                             <div className={styles.countContainer}>
@@ -196,7 +221,10 @@ class ModalListDetails extends React.Component {
                                 </ModalButtonContainer>
                             ) : ''}
 
-                            <div className={styles.tableContainer}>
+                            <div 
+                                className={styles.tableContainer} 
+                                ref={this.scrollContainer}
+                            >
                                 <table className={styles.table}>
                                     <thead>
                                         <tr>
@@ -220,6 +248,11 @@ class ModalListDetails extends React.Component {
                                                     <Button
                                                         type='neutralLight'
                                                         onClick={() => {
+                                                            context.setModal({
+                                                                modal: name,
+                                                                key: 'scrollTop',
+                                                                value: this.scrollContainer.current.scrollTop
+                                                            })
                                                             context.setModal({
                                                                 modal: 'updateCardModal',
                                                                 key: 'card',
@@ -247,7 +280,14 @@ class ModalListDetails extends React.Component {
                             <ModalButtonContainer>
                                 <Button 
                                     type='neutral'
-                                    onClick={() => context.closeModal(name)}
+                                    onClick={() => {
+                                        context.setModal({
+                                            modal: name,
+                                            key: 'scrollTop',
+                                            value: 0
+                                        })
+                                        context.closeModal(name)
+                                    }}
                                 >
                                     close
                                 </Button>

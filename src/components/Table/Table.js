@@ -23,12 +23,7 @@ const Table = () => {
                                 name='all'
                                 type='default'
                                 learnFn={() => {
-                                    context.setModal({
-                                        modal: 'learningModal',
-                                        key: 'listId',
-                                        value: 'all'
-                                    })
-                                    context.showModal('learningModal')
+                                    context.startLearning('all')
                                 }}
                                 showListDetailsFn={() => {
                                     context.setModal({
@@ -51,12 +46,7 @@ const Table = () => {
                                         count={listCards.length}
                                         name={list.name}
                                         learnFn={() => {
-                                            context.setModal({
-                                                modal: 'learningModal',
-                                                key: 'listId',
-                                                value: list.id
-                                            })
-                                            context.showModal('learningModal')
+                                            context.startLearning(list.id)
                                         }}
                                         showListDetailsFn={() => {
                                             context.setModal({
