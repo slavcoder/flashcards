@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./Modal.module.scss";
 import PropTypes from 'prop-types'
 import ModalLearning from './ModalLearning'
-import ModalListDetails from './ModalListDetails'
+import ModalDeckDetails from './ModalDeckDetails'
 import ModalNewCard from './ModalNewCard'
-import ModalNewList from './ModalNewList'
+import ModalNewDeck from './ModalNewDeck'
 
 const Modal = ({title, name, ...props}) => {
     const primaryModals = ['learningModal', 'newCardModal', 'updateCardModal']
@@ -20,12 +20,12 @@ const Modal = ({title, name, ...props}) => {
                 <div className={styles.box}>
                     {name === 'learningModal' ? (
                         <ModalLearning name={name} {...props} />
-                    ) : name === 'listDetailsModal' ? (
-                        <ModalListDetails name={name} {...props} />
+                    ) : name === 'deckDetailsModal' ? (
+                        <ModalDeckDetails name={name} {...props} />
                     ) : name === 'newCardModal' || name === 'updateCardModal' ? (
                         <ModalNewCard name={name} {...props} />
-                    ) : name === 'newListModal' || name === 'updateListModal' ? (
-                        <ModalNewList name={name} {...props} />
+                    ) : name === 'newDeckModal' || name === 'updateDeckModal' ? (
+                        <ModalNewDeck name={name} {...props} />
                     ) : ''}
                 </div>
             </div>

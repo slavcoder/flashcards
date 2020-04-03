@@ -3,14 +3,14 @@ const modals = {
         open: false,
         name: 'learningModal',
         title: 'learning mode',
-        listId: 'all',
+        deckId: 'all',
         card: []
     },
     newCardModal: {
         open: false,
         name: 'newCardModal',
         title: 'new card',
-        listId: false
+        deckId: false
     },
     updateCardModal: {
         open: false,
@@ -18,22 +18,22 @@ const modals = {
         title: 'update card',
         card: false
     },
-    newListModal: {
+    newDeckModal: {
         open: false,
-        name: 'newListModal',
-        title: 'new list'
+        name: 'newDeckModal',
+        title: 'new deck'
     },
-    updateListModal: {
+    updateDeckModal: {
         open: false,
-        name: 'updateListModal',
-        title: 'update list',
-        list: false
+        name: 'updateDeckModal',
+        title: 'update deck',
+        deck: false
     },
-    listDetailsModal: {
+    deckDetailsModal: {
         open: false,
-        name: 'listDetailsModal',
-        title: 'list details',
-        listId: 'all',
+        name: 'deckDetailsModal',
+        title: 'deck details',
+        deckId: 'all',
         showMore: false,
         scrollTop: 0
     }

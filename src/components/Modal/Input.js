@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './ModalInput.module.scss'
+import styles from './Input.module.scss'
 
-const ModalInput = ({children, type, ...props}) => {
+const Input = ({children, type, ...props}) => {
     const inputClass = type === 'textarea' ? 'textarea' : 'input'
 
     return (
@@ -23,4 +23,4 @@ const ModalInput = ({children, type, ...props}) => {
     )
 }
 
-export default ModalInput
+export default Input

@@ -3,8 +3,8 @@ import styles from "./Row.module.scss";
 import Button from '../Button/Button'
 import PropTypes from 'prop-types'
 
-const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
-    const nameButtonType = type === 'userList' ? 'secondaryLight' : 'secondary'
+const Row = ({learn, count, name, type, showDeckDetailsFn, learnFn}) => {
+    const nameButtonType = type === 'userDeck' ? 'secondaryLight' : 'secondary'
 
     return (
         <tr>
@@ -37,7 +37,7 @@ const Row = ({learn, count, name, type, showListDetailsFn, learnFn}) => {
             >
                 <Button
                     type={nameButtonType}
-                    onClick={showListDetailsFn}
+                    onClick={showDeckDetailsFn}
                 >
                     {name}
                 </Button>
@@ -54,7 +54,7 @@ Row.propTypes = {
 }
 
 Row.defaultProps = {
-    type: 'userList'
+    type: 'userDeck'
 }
 
 export default Row;

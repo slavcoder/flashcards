@@ -1,17 +1,17 @@
 import React from 'react';
 import AppContext from '../../context'
-import ModalInput from './ModalInput'
+import Input from './Input'
 import Button from '../Button/Button'
 import styles from './ModalNewCard.module.scss'
-import ModalInfoBar from './ModalInfoBar'
-import ModalSelectList from './ModalSelectList'
-import ModalButtonContainer from './ModalButtonContainer';
+import InfoBar from './InfoBar'
+import SelectDeck from './SelectDeck'
+import ButtonContainer from './ButtonContainer';
 import DeleteConfirmForm from './DeleteConfirmForm';
 import Checkbox from './Checkbox';
 
 class ModalNewCard extends React.Component {
     state = {
-        listId: this.props.card ? this.props.card.listId : this.props.listId ? this.props.listId : false,
+        deckId: this.props.card ? this.props.card.deckId : this.props.deckId ? this.props.deckId : false,
         front: this.props.card ? this.props.card.front : '',
         back: this.props.card ? this.props.card.back : '',
         id: this.props.card ? this.props.card.id : '',
@@ -54,7 +54,7 @@ class ModalNewCard extends React.Component {
     }
 
     render() {
-        const {front, back, count, listId, id, showDeleteConfirmForm} = this.state
+        const {front, back, count, deckId, id, showDeleteConfirmForm} = this.state
         const {name} = this.props
 
         return (
@@ -71,19 +71,19 @@ class ModalNewCard extends React.Component {
                                 }}
                             >
                             </DeleteConfirmForm>
-                        ) : !context.list.length ? (
+                        ) : !context.deck.length ? (
                             <>
-                                <ModalInfoBar type='danger'>
-                                    you have no lists, create one before you add new card
-                                </ModalInfoBar>
-                                <ModalButtonContainer>
+                                <InfoBar type='danger'>
+                                    you have no decks, create one before you add new card
+                                </InfoBar>
+                                <ButtonContainer>
                                     <Button 
                                         type='neutral'
                                         onClick={() => context.closeModal(name)}
                                     >
                                         close
                                     </Button>
-                                </ModalButtonContainer>
+                                </ButtonContainer>
                             </>
                         ) : (
                             <form 
@@ -103,22 +103,22 @@ class ModalNewCard extends React.Component {
                                 }}
                             >
                                 {count ? (
-                                    <ModalInfoBar type='primary'>
+                                    <InfoBar type='primary'>
                                         new card created ({count})
-                                    </ModalInfoBar>
+                                    </InfoBar>
                                 ) : ''}
 
                                 <div className={styles.selectContainer}>
-                                    <ModalSelectList 
-                                        labelText={name === 'updateCardModal' ? 'change list' : 'choose list'}
-                                        listArray={context.list} 
-                                        defaultValue={listId ? listId : 'select list'}
+                                    <SelectDeck 
+                                        labelText={name === 'updateCardModal' ? 'change deck' : 'choose deck'}
+                                        deckArray={context.deck} 
+                                        defaultValue={deckId ? deckId : 'select deck'}
                                         onChangeFn={this.updateValue}
                                     />
                                 </div>
 
                                 {name === 'updateCardModal' ? (
-                                    <ModalButtonContainer type='bottomSpace'>
+                                    <ButtonContainer type='bottomSpace'>
                                         <Button 
                                             type='danger'
                                             onClick={e => {
@@ -128,10 +128,10 @@ class ModalNewCard extends React.Component {
                                         >
                                             delete
                                         </Button>
-                                    </ModalButtonContainer>
+                                    </ButtonContainer>
                                 ) : ''}
 
-                                <ModalInput 
+                                <Input 
                                     type='textarea'
                                     name='front'
                                     placeholder='question (front)'
@@ -139,7 +139,7 @@ class ModalNewCard extends React.Component {
                                     value={front}
                                     onChange={this.updateValue}
                                 />
-                                <ModalInput 
+                                <Input 
                                     type='textarea'
                                     name='back'
                                     placeholder='answer (back)'
@@ -157,7 +157,7 @@ class ModalNewCard extends React.Component {
                                     />
                                 ) : ''}
                                 
-                                <ModalButtonContainer>
+                                <ButtonContainer>
                                     <Button 
                                         type='neutral'
                                         onClick={e => {
@@ -170,7 +170,7 @@ class ModalNewCard extends React.Component {
                                     <Button type='primary'>
                                         {name === 'updateCardModal' ? 'save' : 'add'}
                                     </Button>
-                                </ModalButtonContainer>
+                                </ButtonContainer>
                             </form>
                         )}
                     </>

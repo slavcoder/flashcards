@@ -1,12 +1,12 @@
 import React from 'react';
 import AppContext from '../../context'
 import Button from '../Button/Button'
-import styles from './ModalListDetails.module.scss'
-import ModalSelectList from './ModalSelectList'
-import ModalButtonContainer from './ModalButtonContainer';
+import styles from './ModalDeckDetails.module.scss'
+import SelectDeck from './SelectDeck'
+import ButtonContainer from './ButtonContainer';
 import DeleteConfirmForm from './DeleteConfirmForm';
 
-class ModalListDetails extends React.Component {
+class ModalDeckDetails extends React.Component {
 
     state = {
         showDeleteConfirmForm: false
@@ -65,12 +65,12 @@ class ModalListDetails extends React.Component {
         })
     }
 
-    getList = (list) => {
-        return list.find(el => el.id === this.props.listId)
+    getDeck = (deck) => {
+        return deck.find(el => el.id === this.props.deckId)
     }
 
     render() {
-        const {showMore, name, listId} = this.props
+        const {showMore, name, deckId} = this.props
         const {showDeleteConfirmForm} = this.state
 
         return (
@@ -81,9 +81,9 @@ class ModalListDetails extends React.Component {
                             <>
                                 {showDeleteConfirmForm ? (
                                     <DeleteConfirmForm
-                                        type='list'
+                                        type='deck'
                                         cancelFn={() => this.showDeleteConfirmForm(false)}
-                                        cardsCount={context.card.filter(el => el.listId === listId).length}
+                                        cardsCount={context.card.filter(el => el.deckId === deckId).length}
                                         confirmFn={() => {
                                             this.showDeleteConfirmForm(false)
                                             context.setModal({
@@ -98,16 +98,16 @@ class ModalListDetails extends React.Component {
                                             })
                                             context.setModal({
                                                 modal: name,
-                                                key: 'listId',
+                                                key: 'deckId',
                                                 value: 'all'
                                             })
-                                            context.deleteList(listId)
+                                            context.deleteDeck(deckId)
                                         }}
                                     >
                                     </DeleteConfirmForm>
                                 ) : (
                                     <>
-                                        <ModalButtonContainer type='bottomSpace'>
+                                        <ButtonContainer type='bottomSpace'>
                                             <Button 
                                                 type='danger'
                                                 onClick={() => this.showDeleteConfirmForm(true)}
@@ -118,29 +118,29 @@ class ModalListDetails extends React.Component {
                                                 type='secondary'
                                                 onClick={() => {
                                                     context.setModal({
-                                                        modal: 'updateListModal',
-                                                        key: 'list',
-                                                        value: this.getList(context.list)
+                                                        modal: 'updateDeckModal',
+                                                        key: 'deck',
+                                                        value: this.getDeck(context.deck)
                                                     })
-                                                    context.showModal('updateListModal')
+                                                    context.showModal('updateDeckModal')
                                                 }}
                                             >
                                                 edit
                                             </Button>
-                                        </ModalButtonContainer>
-                                        <div className={styles.listDescription}>
-                                            <h3 className={styles.listDescriptionTitle}>
-                                                {this.getList(context.list).name}
+                                        </ButtonContainer>
+                                        <div className={styles.deckDescription}>
+                                            <h3 className={styles.deckDescriptionTitle}>
+                                                {this.getDeck(context.deck).name}
                                             </h3>
-                                            <p className={styles.listDescriptionContent}>
-                                                {this.getList(context.list).description.length ? (
-                                                    this.getList(context.list).description
+                                            <p className={styles.deckDescriptionContent}>
+                                                {this.getDeck(context.deck).description.length ? (
+                                                    this.getDeck(context.deck).description
                                                 ) : (
                                                     '(no description)'
                                                 )}
                                             </p>
                                         </div>
-                                        <ModalButtonContainer>
+                                        <ButtonContainer>
                                             <Button 
                                                 type='neutral'
                                                 onClick={() => {
@@ -153,17 +153,17 @@ class ModalListDetails extends React.Component {
                                             >
                                                 close
                                             </Button>
-                                        </ModalButtonContainer>
+                                        </ButtonContainer>
                                     </>
                                 )}
                             </>
                         ) : (
                             <>
                             <div className={styles.selectContainer}>
-                                <ModalSelectList 
-                                    labelText='list'
-                                    listArray={context.list}
-                                    defaultValue={listId}
+                                <SelectDeck 
+                                    labelText='deck'
+                                    deckArray={context.deck}
+                                    defaultValue={deckId}
                                     showAll={true}
                                     onChangeFn={e => {
                                         context.setModal({
@@ -173,7 +173,7 @@ class ModalListDetails extends React.Component {
                                         })
                                         context.setModal({
                                             modal: name,
-                                            key: 'listId',
+                                            key: 'deckId',
                                             value: e.target.value === 'all' ? e.target.value : Number(e.target.value)
                                         })
                                     }}
@@ -182,23 +182,23 @@ class ModalListDetails extends React.Component {
                             <div className={styles.countContainer}>
                                 <div className={styles.countTitle}>cards</div>
                                 <div className={styles.count}>
-                                    {listId !== 'all' ? (
-                                        context.card.filter(el => el.listId === listId).length
+                                    {deckId !== 'all' ? (
+                                        context.card.filter(el => el.deckId === deckId).length
                                     ) : (
                                         context.card.length
                                     )}
                                 </div>
                             </div>
 
-                            {listId !== 'all' ? (
-                                <ModalButtonContainer type='bottomSpace'>
+                            {deckId !== 'all' ? (
+                                <ButtonContainer type='bottomSpace'>
                                     <Button 
                                         type='primaryLight'
                                         onClick={() => {
                                             context.setModal({
                                                 modal: 'newCardModal',
-                                                key: 'listId',
-                                                value: listId
+                                                key: 'deckId',
+                                                value: deckId
                                             })
                                             context.showModal('newCardModal')
                                         }}
@@ -218,7 +218,7 @@ class ModalListDetails extends React.Component {
                                         more
                                     </Button>
                                     
-                                </ModalButtonContainer>
+                                </ButtonContainer>
                             ) : ''}
 
                             <div 
@@ -234,11 +234,11 @@ class ModalListDetails extends React.Component {
                                     </thead>
                                     <tbody>
                                         {context.card.filter(el => {
-                                            if(listId === 'all') {
+                                            if(deckId === 'all') {
                                                 return el
                                             }
                                             else {
-                                                return el.listId === listId
+                                                return el.deckId === deckId
                                             }
                                         }).map((item, index) => (
                                             <tr
@@ -277,7 +277,7 @@ class ModalListDetails extends React.Component {
                                 </table>
                             </div>
 
-                            <ModalButtonContainer>
+                            <ButtonContainer>
                                 <Button 
                                     type='neutral'
                                     onClick={() => {
@@ -298,7 +298,7 @@ class ModalListDetails extends React.Component {
                                 >
                                     learn
                                 </Button>
-                            </ModalButtonContainer>
+                            </ButtonContainer>
                             </>
                         )}
                     </>
@@ -308,4 +308,4 @@ class ModalListDetails extends React.Component {
     }
 }
 
-export default ModalListDetails
+export default ModalDeckDetails

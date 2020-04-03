@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './DeleteConfirmForm.module.scss'
 import Button from '../Button/Button'
-import ModalButtonContainer from './ModalButtonContainer'
-import ModalInfoBar from './ModalInfoBar'
+import ButtonContainer from './ButtonContainer'
+import InfoBar from './InfoBar'
 import Checkbox from './Checkbox'
 
 const DeleteConfirmForm = ({type, cancelFn, confirmFn, cardsCount}) => {
@@ -10,13 +10,13 @@ const DeleteConfirmForm = ({type, cancelFn, confirmFn, cardsCount}) => {
     return (
         <>
             <h3 className={styles.heading}>Delete {type}</h3>
-            <ModalInfoBar type='danger'>
+            <InfoBar type='danger'>
                 {type === 'card' ? (
                     'Deleted cards cannot be restored'
                 ) : (
-                    `All cards (${cardsCount}) of this list will be deleted too, are you sure to continue?`
+                    `All cards (${cardsCount}) of this deck will be deleted too, are you sure to continue?`
                 )}
-            </ModalInfoBar>
+            </InfoBar>
             <form
                 onSubmit={e => {
                     e.preventDefault()
@@ -28,7 +28,7 @@ const DeleteConfirmForm = ({type, cancelFn, confirmFn, cardsCount}) => {
                     name='delete'
                     required={true}
                 />
-                <ModalButtonContainer>
+                <ButtonContainer>
                     <Button 
                         type='neutral'
                         onClick={e => {
@@ -43,7 +43,7 @@ const DeleteConfirmForm = ({type, cancelFn, confirmFn, cardsCount}) => {
                     >
                         delete
                     </Button>  
-                </ModalButtonContainer>
+                </ButtonContainer>
             </form>
         </>
     )

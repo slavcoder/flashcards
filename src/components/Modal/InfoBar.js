@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from './ModalInfoBar.module.scss'
+import styles from './InfoBar.module.scss'
 
-const ModalInfoBar = ({children, type}) => {
+const InfoBar = ({children, type}) => {
     return (
         <p className={styles[type]}>
             {children}
@@ -9,4 +9,4 @@ const ModalInfoBar = ({children, type}) => {
     )
 }
 
-export default ModalInfoBar
+export default InfoBar

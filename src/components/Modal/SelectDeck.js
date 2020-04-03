@@ -1,20 +1,20 @@
 import React from 'react'
-import styles from './ModalSelectList.module.scss'
+import styles from './SelectDeck.module.scss'
 
-const ModalSelectList = ({showAll, labelText, listArray, defaultValue, onChangeFn}) => {
+const SelectDeck = ({showAll, labelText, deckArray, defaultValue, onChangeFn}) => {
 
     return (
         <>
             <label 
-                htmlFor="listName"
+                htmlFor="deckName"
                 className={styles.label}
             >
                 {labelText}
             </label>
             <select 
                 className={styles.select}
-                name="listId" 
-                id="listName" 
+                name="deckId" 
+                id="deckName" 
                 onChange={onChangeFn}
                 defaultValue={defaultValue}
                 required
@@ -30,18 +30,18 @@ const ModalSelectList = ({showAll, labelText, listArray, defaultValue, onChangeF
                     <option 
                         className={styles.option}
                         disabled 
-                        value='select list'
+                        value='select deck'
                     >
-                        - select list -
+                        - select deck -
                     </option>
                 )}
-                {listArray.map((listItem, index) => (
+                {deckArray.map((deckItem, index) => (
                     <option 
                         className={styles.option}
                         key={index}
-                        value={listItem.id}
+                        value={deckItem.id}
                     >
-                        {listItem.name}
+                        {deckItem.name}
                     </option>
                 ))}
             </select>
@@ -49,4 +49,4 @@ const ModalSelectList = ({showAll, labelText, listArray, defaultValue, onChangeF
     )
 }
 
-export default ModalSelectList
+export default SelectDeck

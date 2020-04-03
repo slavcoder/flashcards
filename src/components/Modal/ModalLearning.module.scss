@@ -92,6 +92,15 @@
     button {
         margin: 0 5px;
         width: 120px;
+
+        &:hover,
+        &:focus {
+            outline: 0;
+            
+            &::-moz-focus-inner {
+                border: 0;
+            }
+        }
     }
 }
 

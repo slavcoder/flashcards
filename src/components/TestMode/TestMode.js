@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../Button/Button'
 import styles from './TestMode.module.scss'
 
-const TestMode = ({testCardsFn, testListFn, toggleTestModeFn}) => (
+const TestMode = ({testCardsFn, testDeckFn, toggleTestModeFn}) => (
     <>
         <p className={styles.bar}>
             test mode
@@ -24,23 +24,23 @@ const TestMode = ({testCardsFn, testListFn, toggleTestModeFn}) => (
             </Button>
             <Button
                 type='secondary'
-                onClick={() => testListFn()}
+                onClick={() => testDeckFn()}
             >
-                add test list
+                add test deck
             </Button>
 
             <p>
                 In test mode you can add some random data to see how 
-                this app works when you have more cards or lists before 
+                this app works when you have more cards or decks before 
                 you spend time to create them by your own
             </p>
             <p>
-                Any cards and lists created or modified under test mode are temporary changes
+                Any cards and decks created or modified under test mode are temporary changes
                 (not saved). You can experiment: add/delete/edit cards and 
-                lists, reset card progress etc.
+                decks, reset card progress etc.
             </p>
             <p>
-                You need at least one list before you can add cards.
+                You need at least one deck before you can add cards.
             </p>
             <p>
                 To stop test mode, click again on button in footer or bottom bar. 

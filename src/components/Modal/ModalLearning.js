@@ -1,7 +1,7 @@
 import React from 'react';
 import AppContext from '../../context'
-import ModalSelectList from './ModalSelectList'
-import ModalButtonContainer from './ModalButtonContainer'
+import SelectDeck from './SelectDeck'
+import ButtonContainer from './ButtonContainer'
 import Button from '../Button/Button'
 import styles from './ModalLearning.module.scss'
 
@@ -19,7 +19,7 @@ class ModalLearning extends React.Component {
     }
 
     render() {
-        const { card, name, listId } = this.props
+        const { card, name, deckId } = this.props
         const { front } = this.state
         // const cardStack = card.sort((a,b) => a.hardCount - b.hardCount)
         const cardStack = card
@@ -29,14 +29,14 @@ class ModalLearning extends React.Component {
                 {context => (
                     <>
                         <div className={styles.selectContainer}>
-                            <ModalSelectList 
-                                labelText='list'
-                                listArray={context.list}
-                                defaultValue={listId}
+                            <SelectDeck 
+                                labelText='deck'
+                                deckArray={context.deck}
+                                defaultValue={deckId}
                                 showAll={true}
                                 onChangeFn={e => {
-                                    const newListId = e.target.value === 'all' ? e.target.value : Number(e.target.value)
-                                    context.startLearning(newListId)
+                                    const newDeckId = e.target.value === 'all' ? e.target.value : Number(e.target.value)
+                                    context.startLearning(newDeckId)
                                 }}
                             />
                         </div>
@@ -119,12 +119,12 @@ class ModalLearning extends React.Component {
                                     )}
                                 </>
                             ) : (
-                                <h2 className={styles.noCardsInfo}>no cards to learn on this list</h2>
+                                <h2 className={styles.noCardsInfo}>no cards to learn on this deck</h2>
                             )}
                             <div>
                             </div>
                         </div>
-                        <ModalButtonContainer>
+                        <ButtonContainer>
                             <Button 
                                 type='neutral'
                                 onClick={e => {
@@ -134,7 +134,7 @@ class ModalLearning extends React.Component {
                             >
                                 close
                             </Button>
-                        </ModalButtonContainer>
+                        </ButtonContainer>
                     </>
                 )}
             </AppContext.Consumer>

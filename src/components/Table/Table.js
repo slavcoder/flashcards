@@ -13,7 +13,7 @@ const Table = () => {
                             <tr>
                                 <th>learn</th>
                                 <th>count</th>
-                                <th className={styles.name}>list name</th>
+                                <th className={styles.name}>deck name</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,36 +25,36 @@ const Table = () => {
                                 learnFn={() => {
                                     context.startLearning('all')
                                 }}
-                                showListDetailsFn={() => {
+                                showDeckDetailsFn={() => {
                                     context.setModal({
-                                        modal: 'listDetailsModal',
-                                        key: 'listId',
+                                        modal: 'deckDetailsModal',
+                                        key: 'deckId',
                                         value: 'all'
                                     })
-                                    context.showModal('listDetailsModal')
+                                    context.showModal('deckDetailsModal')
                                 }}
                             />
-                            {context.list.map((list, index) => {
-                                const listCards = context.card.filter(el => el.listId === list.id)
+                            {context.deck.map((deck, index) => {
+                                const deckCards = context.card.filter(el => el.deckId === deck.id)
                                 
                                 return (
                                     <Row
                                         key={index}
-                                        learn={listCards.filter(el => {
+                                        learn={deckCards.filter(el => {
                                             return context.nextRepetitionInDays(el.nextRepetition) <= 0
                                         }).length}
-                                        count={listCards.length}
-                                        name={list.name}
+                                        count={deckCards.length}
+                                        name={deck.name}
                                         learnFn={() => {
-                                            context.startLearning(list.id)
+                                            context.startLearning(deck.id)
                                         }}
-                                        showListDetailsFn={() => {
+                                        showDeckDetailsFn={() => {
                                             context.setModal({
-                                                modal: 'listDetailsModal',
-                                                key: 'listId',
-                                                value: list.id
+                                                modal: 'deckDetailsModal',
+                                                key: 'deckId',
+                                                value: deck.id
                                             })
-                                            context.showModal('listDetailsModal')
+                                            context.showModal('deckDetailsModal')
                                         }}
                                     />
                                 )

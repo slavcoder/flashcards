@@ -1,15 +1,15 @@
 import React from 'react';
 import AppContext from '../../context'
-import ModalInput from './ModalInput'
+import Input from './Input'
 import Button from '../Button/Button'
-import styles from './ModalNewCard.module.scss'
-import ModalButtonContainer from './ModalButtonContainer';
+import styles from './ModalNewDeck.module.scss'
+import ButtonContainer from './ButtonContainer';
 
-class ModalNewList extends React.Component {
+class ModalNewDeck extends React.Component {
     state = {
-        listName: this.props.list ? this.props.list.name : '',
-        description: this.props.list ? this.props.list.description : '',
-        id: this.props.list ? this.props.list.id : false
+        deckName: this.props.deck ? this.props.deck.name : '',
+        description: this.props.deck ? this.props.deck.description : '',
+        id: this.props.deck ? this.props.deck.id : false
     }
 
     updateValue = (e) => {
@@ -19,7 +19,7 @@ class ModalNewList extends React.Component {
     }
 
     render() {
-        const {listName, description} = this.state
+        const {deckName, description} = this.state
         const {name} = this.props
 
         return (
@@ -31,30 +31,30 @@ class ModalNewList extends React.Component {
                             action=""
                             onSubmit={e => {
                                 e.preventDefault()
-                                if(name === 'newListModal') {
-                                    context.createList(this.state)
+                                if(name === 'newDeckModal') {
+                                    context.createDeck(this.state)
                                 }
                                 else {
-                                    context.updateList(this.state)
+                                    context.updateDeck(this.state)
                                 }
                                 context.closeModal(name)
                             }}
                         >
-                            <ModalInput 
-                                name='listName'
-                                placeholder='list name'
+                            <Input 
+                                name='deckName'
+                                placeholder='deck name'
                                 required
-                                value={listName}
+                                value={deckName}
                                 onChange={this.updateValue}
                             />
-                            <ModalInput 
+                            <Input 
                                 type='textarea'
                                 name='description'
                                 placeholder='description (optional)'
                                 value={description}
                                 onChange={this.updateValue}
                             />
-                            <ModalButtonContainer>
+                            <ButtonContainer>
                                 <Button 
                                     type='neutral'
                                     onClick={e => {
@@ -67,9 +67,9 @@ class ModalNewList extends React.Component {
                                 <Button 
                                     type='primary'
                                 >
-                                    {name === 'updateListModal' ? 'save' : 'add'}
+                                    {name === 'updateDeckModal' ? 'save' : 'add'}
                                 </Button>
-                            </ModalButtonContainer>
+                            </ButtonContainer>
                         </form>
                     )}
                 </AppContext.Consumer>
@@ -78,4 +78,4 @@ class ModalNewList extends React.Component {
     }
 }
 
-export default ModalNewList
+export default ModalNewDeck
