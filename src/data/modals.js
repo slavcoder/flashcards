@@ -1,8 +1,8 @@
 const modals = {
-    learningModal: {
+    reviewModal: {
         open: false,
-        name: 'learningModal',
-        title: 'learning mode',
+        name: 'reviewModal',
+        title: 'review mode',
         deckId: 'all',
         card: []
     },
@@ -36,6 +36,11 @@ const modals = {
         deckId: 'all',
         showMore: false,
         scrollTop: 0
+    },
+    aboutModal: {
+        open: false,
+        name: 'aboutModal',
+        title: 'About'
     }
 }
 

@@ -3,16 +3,15 @@ import AppContext from '../../context'
 import SelectDeck from './SelectDeck'
 import ButtonContainer from './ButtonContainer'
 import Button from '../Button/Button'
-import styles from './ModalLearning.module.scss'
+import styles from './ModalReview.module.scss'
+import PropTypes from 'prop-types'
 
-class ModalLearning extends React.Component {
+class ModalReview extends React.Component {
     state = {
-        // card: this.props.card
         front: true
     }
 
     flipCard = () => {
-        console.log('flip card')
         this.setState(prevState => ({
             front: !prevState.front
         }))
@@ -21,7 +20,6 @@ class ModalLearning extends React.Component {
     render() {
         const { card, name, deckId } = this.props
         const { front } = this.state
-        // const cardStack = card.sort((a,b) => a.hardCount - b.hardCount)
         const cardStack = card
 
         return (
@@ -35,8 +33,9 @@ class ModalLearning extends React.Component {
                                 defaultValue={deckId}
                                 showAll={true}
                                 onChangeFn={e => {
-                                    const newDeckId = e.target.value === 'all' ? e.target.value : Number(e.target.value)
-                                    context.startLearning(newDeckId)
+                                    const newDeckId = e.target.value === 'all' ? e.target.value : 
+                                                      Number(e.target.value)
+                                    context.startReview(newDeckId)
                                 }}
                             />
                         </div>
@@ -52,7 +51,7 @@ class ModalLearning extends React.Component {
                                     {front ? (
                                         <>
                                             <h2 className={styles.heading}>
-                                                Question (front)
+                                                - front -
                                                 <button 
                                                     className={styles.flipButton}
                                                     onClick={this.flipCard}
@@ -75,7 +74,7 @@ class ModalLearning extends React.Component {
                                     ) : (
                                         <>
                                             <h2 className={styles.headingNeutral}>
-                                                Answer (back)
+                                                - back -
                                                 <button 
                                                     className={styles.flipButton}
                                                     onClick={this.flipCard}
@@ -119,18 +118,13 @@ class ModalLearning extends React.Component {
                                     )}
                                 </>
                             ) : (
-                                <h2 className={styles.noCardsInfo}>no cards to learn on this deck</h2>
+                                <h2 className={styles.noCardsInfo}>no cards to learn in this deck</h2>
                             )}
-                            <div>
-                            </div>
                         </div>
                         <ButtonContainer>
                             <Button 
                                 type='neutral'
-                                onClick={e => {
-                                    e.preventDefault()
-                                    context.closeModal(name)
-                                }}
+                                onClick={_ => context.closeModal(name)}
                             >
                                 close
                             </Button>
@@ -142,7 +136,9 @@ class ModalLearning extends React.Component {
     }
 }
 
-export default ModalLearning
+ModalReview.propTypes = {
+    name: PropTypes.string.isRequired,
+}
 
 
-// {this.getCardsToLearn(context.card, context.nextRepetitionInDays).length}
+export default ModalReview

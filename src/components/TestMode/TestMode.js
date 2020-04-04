@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '../Button/Button'
 import styles from './TestMode.module.scss'
+import PropTypes from 'prop-types'
 
 const TestMode = ({testCardsFn, testDeckFn, toggleTestModeFn}) => (
     <>
@@ -13,7 +14,6 @@ const TestMode = ({testCardsFn, testDeckFn, toggleTestModeFn}) => (
                 stop
             </button> 
         </p>
-
         <h2 className={styles.heading}>Test mode actions</h2>
         <div className={styles.testModeInfoBox}>
             <Button
@@ -28,26 +28,19 @@ const TestMode = ({testCardsFn, testDeckFn, toggleTestModeFn}) => (
             >
                 add test deck
             </Button>
-
-            <p>
-                In test mode you can add some random data to see how 
-                this app works when you have more cards or decks before 
-                you spend time to create them by your own
-            </p>
-            <p>
-                Any cards and decks created or modified under test mode are temporary changes
-                (not saved). You can experiment: add/delete/edit cards and 
-                decks, reset card progress etc.
-            </p>
-            <p>
-                You need at least one deck before you can add cards.
-            </p>
-            <p>
-                To stop test mode, click again on button in footer or bottom bar. 
-                You can also just refresh the page.
-            </p>
+            
+            <p>In test mode you can add some random data to see how this app works when you have more cards or decks before you spend time to create them by your own</p>
+            <p>Any cards and decks created or modified under test mode are temporary changes (not saved). You can experiment: add/delete/edit cards and decks, reset card progress etc.</p>
+            <p>You need at least one deck before you can add cards.</p>
+            <p>To stop test mode, click again on button in footer or bottom bar. You can also just refresh the page.</p>
         </div>
     </>
 )
+
+TestMode.propTypes = {
+    testCardsFn: PropTypes.func.isRequired, 
+    testDeckFn: PropTypes.func.isRequired, 
+    toggleTestModeFn: PropTypes.func.isRequired,
+}
 
 export default TestMode

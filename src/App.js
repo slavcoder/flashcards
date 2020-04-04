@@ -22,7 +22,7 @@ class App extends React.Component {
         ...modals
     }
 
-    showModal = (modal) => {
+    showModal = modal => {
         this.setModal({
             modal: modal,
             key: 'open',
@@ -30,12 +30,22 @@ class App extends React.Component {
         })
     }
     
-    closeModal = (modal) => {
+    closeModal = modal => {
         this.setModal({
             modal: modal,
             key: 'open',
             value: false
         })
+    }
+
+    showDeckDetails = (deckId) => {
+        this.setState(prevState => ({
+            deckDetailsModal: {
+                ...prevState.deckDetailsModal,
+                open: true,
+                deckId: deckId
+            }
+        }))
     }
 
     createCard = ({deckId, front, back}) => {
@@ -49,7 +59,7 @@ class App extends React.Component {
                     deckId: Number(deckId),
                     front: front,
                     back: back,
-                    nextRepetition: today.toISOString(),
+                    nextReview: today.toISOString(),
                     knowledgeLevel: 0
                 }
             ]
@@ -79,7 +89,7 @@ class App extends React.Component {
                 deckId: Number(deckId),
                 front: front,
                 back: back,
-                nextRepetition: reset ? today.toISOString() : el.nextRepetition,
+                nextReview: reset ? today.toISOString() : el.nextReview,
                 knowledgeLevel: reset ? 0 : el.knowledgeLevel
             } : el)
         }), () => this.saveChanges('card'))
@@ -107,15 +117,14 @@ class App extends React.Component {
         }))
     }
 
-    startLearning = (deckId) => {
-        console.log(deckId)
+    startReview = (deckId) => {
         const allCards = this.state.card.filter(el => deckId === 'all' ? el : el.deckId === deckId)
-        const cardsToLearn = allCards.filter(el => this.nextRepetitionInDays(el.nextRepetition) <= 0)
+        const cardsToLearn = allCards.filter(el => this.nextReviewInDays(el.nextReview) <= 0)
         cardsToLearn.forEach(el => el.hardCount = 1)
         
         this.setState(prevState => ({
-            learningModal: {
-                ...prevState.learningModal,
+            reviewModal: {
+                ...prevState.reviewModal,
                 deckId: deckId,
                 open: true,
                 card: cardsToLearn
@@ -125,9 +134,7 @@ class App extends React.Component {
 
     handleCard = (level, card) => {
         // level: hard/medium/easy
-        const cardDeck = [...this.state.learningModal.card]
-        console.log('handleCard')
-        console.log(cardDeck)
+        const cardDeck = [...this.state.reviewModal.card]
 
         if(level === 'hard') {
             card.hardCount++
@@ -135,7 +142,7 @@ class App extends React.Component {
             cardDeck.push(card)
 
             this.setModal({
-                modal: 'learningModal',
+                modal: 'reviewModal',
                 key: 'card',
                 value: cardDeck
             })
@@ -143,20 +150,20 @@ class App extends React.Component {
         } else if(level === 'medium') {
             cardDeck.shift()
             const today = new Date()
-            const days = card.knowledgeLevel === 0 ? 2:
+            const days = card.knowledgeLevel === 0 ? 2 :
                          card.knowledgeLevel === 1 ? Math.random() * 3 + 1 :
                          card.knowledgeLevel === 2 ? Math.random() * 7 + 3 :
                          Math.random() * 5 + 10
 
-            const nextRepetition = new Date(today.getTime() + Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000))
+            const nextReview = new Date(today.getTime() + Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000))
 
             this.setState(prevState => ({
                 card: prevState.card.map(el => el.id === card.id ? {
                     ...el,
-                    nextRepetition: nextRepetition.toISOString(),
+                    nextReview: nextReview.toISOString(),
                 } : el),
-                learningModal: {
-                    ...prevState.learningModal,
+                reviewModal: {
+                    ...prevState.reviewModal,
                     card: cardDeck
                 }
             }), () => this.saveChanges('card'))
@@ -164,57 +171,59 @@ class App extends React.Component {
         } else {
             cardDeck.shift()
             const today = new Date()
-            const days = card.knowledgeLevel === 0 ? 2:
+            const days = card.knowledgeLevel === 0 ? 2 :
                          card.knowledgeLevel === 1 ? Math.random() * 5  + 5   :
                          card.knowledgeLevel === 2 ? Math.random() * 10 + 25  :
                          card.knowledgeLevel === 3 ? Math.random() * 20 + 80  :
                          card.knowledgeLevel === 4 ? Math.random() * 30 + 340 :
                          Math.random() * 365 + 365
 
-            const nextRepetition = new Date(today.getTime() + Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000))
+            const nextReview = new Date(today.getTime() + Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000))
 
             this.setState(prevState => ({
                 card: prevState.card.map(el => el.id === card.id ? {
                     ...el,
-                    nextRepetition: nextRepetition.toISOString(),
+                    nextReview: nextReview.toISOString(),
                     knowledgeLevel: el.knowledgeLevel + 1,
                 } : el),
-                learningModal: {
-                    ...prevState.learningModal,
+                reviewModal: {
+                    ...prevState.reviewModal,
                     card: cardDeck
                 }
             }), () => this.saveChanges('card'))
         }
     }
 
-    nextRepetitionInDays = (cardNextRepetition) => {
+    nextReviewInDays = cardNextReview => {
         const today = new Date()
-        const cardRepetitionDate = new Date(cardNextRepetition)
-        const daysDiff = Math.floor((cardRepetitionDate - today)/(1000*60*60*24))
+        const cardReviewDate = new Date(cardNextReview)
+        const daysDiff = Math.floor((cardReviewDate - today) / (1000*60*60*24))
         return daysDiff
     }
 
-    deleteCard = (id) => {
-        console.log('delete card: ' + id)
-
+    deleteCard = id => {
         this.setState(prevState => ({
             card: prevState.card.filter(el => el.id !== id)
         }), () => this.saveChanges('card'))
     }
 
-    deleteDeck = (deckId) => {
-        console.log('delete deck: ' + deckId)
-
+    deleteDeck = deckId => {
         this.setState(prevState => ({
             deck: prevState.deck.filter(el => el.id !== deckId),
-            card: prevState.card.filter(el => el.deckId !== deckId)
+            card: prevState.card.filter(el => el.deckId !== deckId),
+            deckDetailsModal: {
+                ...prevState.deckDetailsModal,
+                scrollTop: 0,
+                showMore: false,
+                deckId: 'all'
+            }
         }), () => {
             this.saveChanges('deck')
             this.saveChanges('card')
         })
     }
 
-    testCards = (amount) => {
+    testCards = amount => {
         if(!this.state.deck.length) return
         const newCards = []
         const startId = this.state.card.length ? this.state.card[this.state.card.length-1].id : 1
@@ -222,20 +231,18 @@ class App extends React.Component {
         const deckIdArrLength = deckIdArr.length
         const textArr = testText.split('. ').filter(el => el.trim().length)
         const textArrLength = textArr.length
+        const random = n => Math.random() * n
 
         for(let i = 1; i <= amount; i++) {
             newCards.push({
                 id: startId+i,
-                deckId: deckIdArr[Math.floor(Math.random() * (deckIdArrLength))],
-                front: textArr[Math.floor(Math.random() * textArrLength)],
-                back: textArr[Math.floor(Math.random() * textArrLength)],
-                nextRepetition: `202${Math.floor(Math.random()*3)}-${Math.floor((Math.random()*12)+1)}-${Math.floor((Math.random()*28)+1)}`,
-                knowledgeLevel: Math.floor(Math.random()*5)
+                deckId: deckIdArr[Math.floor(random(deckIdArrLength))],
+                front: textArr[Math.floor(random(textArrLength))],
+                back: textArr[Math.floor(random(textArrLength))],
+                nextReview: `202${Math.floor(random(3))}-${Math.floor((random(12))+1)}-${Math.floor((random(28))+1)}`,
+                knowledgeLevel: Math.floor(random(5))
             })
         }
-
-        console.log(`added ${amount} cards`)
-        // console.log(newCards)
 
         this.setState(prevState => ({
             card: [
@@ -267,7 +274,7 @@ class App extends React.Component {
             testMode: !prevState.testMode
         }), () => {
             if(!this.state.testMode) {
-                this.closeModal('learningModal')
+                this.closeModal('reviewModal')
                 this.closeModal('newCardModal')
                 this.closeModal('updateCardModal')
                 this.closeModal('newDeckModal')
@@ -303,21 +310,23 @@ class App extends React.Component {
             createDeck: this.createDeck,
             updateDeck: this.updateDeck,
             setModal: this.setModal,
-            nextRepetitionInDays: this.nextRepetitionInDays,
+            nextReviewInDays: this.nextReviewInDays,
             deleteCard: this.deleteCard,
             deleteDeck: this.deleteDeck,
-            startLearning: this.startLearning,
+            startReview: this.startReview,
             handleCard: this.handleCard,
+            showDeckDetails: this.showDeckDetails,
             ...this.state
         }
 
         const allModals = [
-            this.state.learningModal,
+            this.state.reviewModal,
             this.state.newCardModal,
             this.state.updateCardModal,
             this.state.newDeckModal,
             this.state.updateDeckModal,
-            this.state.deckDetailsModal
+            this.state.deckDetailsModal,
+            this.state.aboutModal,
         ]
 
         const {testMode} = this.state
@@ -374,6 +383,7 @@ class App extends React.Component {
                     <Footer 
                         testMode={testMode}
                         toggleTestModeFn={this.toggleTestMode}
+                        showAboutFn={() => this.showModal('aboutModal')}
                     />
                 </AppContext.Provider>
             </>

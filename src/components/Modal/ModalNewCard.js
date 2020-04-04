@@ -8,10 +8,12 @@ import SelectDeck from './SelectDeck'
 import ButtonContainer from './ButtonContainer';
 import DeleteConfirmForm from './DeleteConfirmForm';
 import Checkbox from './Checkbox';
+import PropTypes from 'prop-types'
 
 class ModalNewCard extends React.Component {
     state = {
-        deckId: this.props.card ? this.props.card.deckId : this.props.deckId ? this.props.deckId : false,
+        deckId: this.props.card ? this.props.card.deckId : 
+                this.props.deckId ? this.props.deckId : false,
         front: this.props.card ? this.props.card.front : '',
         back: this.props.card ? this.props.card.back : '',
         id: this.props.card ? this.props.card.id : '',
@@ -20,7 +22,7 @@ class ModalNewCard extends React.Component {
         showDeleteConfirmForm: false,
     }
 
-    updateValue = (e) => {
+    updateValue = e => {
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -39,7 +41,7 @@ class ModalNewCard extends React.Component {
         }))
     }
 
-    resetProgress = (e) => {
+    resetProgress = e => {
         const reset = e.target.checked ? true : false
 
         this.setState({
@@ -47,7 +49,7 @@ class ModalNewCard extends React.Component {
         })
     }
 
-    showDeleteConfirmForm = (bool) => {
+    showDeleteConfirmForm = bool => {
         this.setState({
             showDeleteConfirmForm: bool
         })
@@ -178,6 +180,10 @@ class ModalNewCard extends React.Component {
             </AppContext.Consumer>
         )
     }
+}
+
+ModalNewCard.propTypes = {
+    name: PropTypes.string.isRequired
 }
 
 export default ModalNewCard

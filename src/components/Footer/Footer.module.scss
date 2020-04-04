@@ -2,11 +2,13 @@
 
 .footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     height: 50px;
     margin-top: 50px;
     padding-bottom: 70px;
+    font-size: .8em;
 }
 
 .testButton {
@@ -16,7 +18,9 @@
     padding: .2em .4em;
     transition: .2s;
     cursor: pointer;
-
+    margin-top: 5px;
+    margin-right: 10px;
+    
     &:hover,
     &:focus {
         background-color: $colorSecondaryLight;
@@ -30,15 +34,22 @@
 }
 
 .link {
-    margin-right: 15px;
+    margin-right: 10px;
     padding: .2em .4em;
     border: 1px solid lighten($colorDark, 55%);
     color: $colorDark;
     text-decoration: none;
     transition: .2s;
-
+    margin-top: 5px;
+    
     &:hover,
     &:focus {
         background-color: $colorPrimary;
     }
+}
+
+.aboutButton {
+    @extend .link;
+    cursor: pointer;
+    background-color: #fff;
 }

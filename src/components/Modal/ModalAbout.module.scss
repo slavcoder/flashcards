@@ -1,0 +1,19 @@
+@import '../../variables.scss';
+
+.aboutContainer {
+    margin-bottom: 25px;
+    color: $colorDark;
+
+    a {
+        display: inline-block;
+        border-bottom: 1px solid $colorDark;
+        color: inherit;
+        text-decoration: none;
+        transition: .2s;
+
+        &:hover,
+        &:focus {
+            background-color: $colorPrimary;
+        }
+    }
+}

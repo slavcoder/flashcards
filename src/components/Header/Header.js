@@ -5,9 +5,7 @@ const Header = () => (
     <header className={styles.header}>
         <h1 className={styles.heading}>
             <a className={styles.link} href="/">flashcards</a>
-        </h1>
-        
-            
+        </h1>            
     </header>
 )
 

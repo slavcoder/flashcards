@@ -76,7 +76,7 @@
     padding-left: 1em;
 }
 
-.tableRepetitionTitle {
+.tableReviewTitle {
     text-align: center;
     background-color: $colorSecondaryLight;
 }
@@ -95,44 +95,44 @@
     }
 }
 
-.tableRepetition {
+.tableReview {
     text-align: center;
     width: 30%;
     padding: 0 10px;
 }
 
-.repetitionPrimary {
-    @extend .tableRepetition;
+.reviewPrimary {
+    @extend .tableReview;
     background-color: darken($colorPrimary, 5%);
 }
-.repetitionPrimaryLight{
-    @extend .tableRepetition;
+.reviewPrimaryLight{
+    @extend .tableReview;
     background-color: lighten($colorPrimary, 2%);
 }
-.repetitionPrimaryLighter{
-    @extend .tableRepetition;
+.reviewPrimaryLighter{
+    @extend .tableReview;
     background-color: lighten($colorPrimary, 7%);
 }
-.repetitionPrimaryDeepLight{
-    @extend .tableRepetition;
+.reviewPrimaryDeepLight{
+    @extend .tableReview;
     background-color: lighten($colorPrimary, 12%);
 }
-.repetitionPrimaryDeepLighter{
-    @extend .tableRepetition;
+.reviewPrimaryDeepLighter{
+    @extend .tableReview;
     background-color: lighten($colorPrimary, 15%);
 }
-.repetitionNeutral{
-    @extend .tableRepetition;
+.reviewNeutral{
+    @extend .tableReview;
     background-color: $colorNeutral;
     color: rgba($colorDark, .8);
 }
-.repetitionNeutralLight{
-    @extend .tableRepetition;
+.reviewNeutralLight{
+    @extend .tableReview;
     background-color: lighten($colorNeutral, 2%);
     color: rgba($colorDark, .7);
 }
-.repetitionNeutralLighter{
-    @extend .tableRepetition;
+.reviewNeutralLighter{
+    @extend .tableReview;
     background-color: lighten($colorNeutral, 3%);
     color: rgba($colorDark, .6);
 }

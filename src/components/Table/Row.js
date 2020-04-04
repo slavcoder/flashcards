@@ -3,38 +3,29 @@ import styles from "./Row.module.scss";
 import Button from '../Button/Button'
 import PropTypes from 'prop-types'
 
-const Row = ({learn, count, name, type, showDeckDetailsFn, learnFn}) => {
+const Row = ({review, count, name, type, showDeckDetailsFn, reviewFn}) => {
     const nameButtonType = type === 'userDeck' ? 'secondaryLight' : 'secondary'
 
     return (
         <tr>
-            <td
-                className={styles.learn}
-            >
-            {learn ? (
+            <td className={styles.review}>
+            {review ? (
                 <Button
                     type='primary'
-                    onClick={learnFn}
+                    onClick={reviewFn}
                 >
-                    {learn}
+                    {review}
                 </Button>
             ) : (
-                <span>
-                    {learn}
-                </span>
+                <span>{review}</span>
             )}
-                
             </td>
 
-            <td
-                className={styles.count}
-            >
+            <td className={styles.count}>
                 {count}
             </td>
-
-            <td
-                className={styles.name} 
-            >
+            
+            <td className={styles.name}>
                 <Button
                     type={nameButtonType}
                     onClick={showDeckDetailsFn}
@@ -47,10 +38,12 @@ const Row = ({learn, count, name, type, showDeckDetailsFn, learnFn}) => {
 }
 
 Row.propTypes = {
-    learn: PropTypes.number.isRequired,
+    review: PropTypes.number.isRequired,
     count: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    type: PropTypes.string
+    type: PropTypes.string,
+    showDeckDetailsFn: PropTypes.func.isRequired, 
+    reviewFn: PropTypes.func.isRequired
 }
 
 Row.defaultProps = {
