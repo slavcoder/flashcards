@@ -37,7 +37,7 @@ class ModalNewCard extends React.Component {
 
     countNewCards = () => {
         this.setState(prevState => ({
-            count: prevState.count++
+            count: prevState.count + 1
         }))
     }
 
