@@ -17,7 +17,7 @@
     td {
         border: 1px solid $colorDark;
         padding: 0;
-        min-width: 70px;
+        min-width: 80px;
         text-align: center;
         font-size: .9em;
     }
@@ -31,6 +31,7 @@
 
     tr td:last-child {
        font-size: .8em; 
+       width: 100%;
     }
 
     tr:first-child td:last-child {

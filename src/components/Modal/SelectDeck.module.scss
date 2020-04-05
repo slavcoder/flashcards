@@ -5,7 +5,7 @@
     border: 1px solid $colorDark;
     border-right: 0;
     width: 200px;
-    max-width: 50%;
+    max-width: 40%;
     text-align: center;
     padding: 10px;
     flex-shrink: 0;
@@ -16,7 +16,7 @@
     width: 100%;
     background-color: $colorSecondaryLight;
     border: 0;
-    padding: 0 1em;
+    padding: 0 30px 0 1em;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
@@ -28,6 +28,11 @@
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
+    position: relative;
+    background-image: url('../../assets/arrow.png');
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;
 
     &:hover,
     &:focus {

@@ -21,7 +21,7 @@ const SelectDeck = ({showAll, labelText, deckArray, defaultValue, onChangeFn}) =
             {showAll ? (
                 <option 
                     className={styles.option} 
-                    value='all'
+                    value={0}
                 >
                     all
                 </option>
@@ -49,10 +49,14 @@ const SelectDeck = ({showAll, labelText, deckArray, defaultValue, onChangeFn}) =
 )
 
 SelectDeck.propTypes = {
-    showAll: PropTypes.bool.isRequired,
+    showAll: PropTypes.bool,
     labelText: PropTypes.string.isRequired,
     deckArray: PropTypes.array.isRequired,
     onChangeFn: PropTypes.func.isRequired,
+}
+
+SelectDeck.defaultProps = {
+    showAll: false,
 }
 
 export default SelectDeck

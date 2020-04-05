@@ -22,17 +22,21 @@ class App extends React.Component {
         ...modals
     }
 
-    setModal = ({modal, key, value}) => {
-        this.setState(prevState => ({
-            [modal]: {
-                ...prevState[modal],
-                [key]: value
-            }
-        }))
+    showModal = modal => {
+        this.setModal({
+            modal: modal,
+            key: 'open',
+            value: true
+        })
     }
-
-    showModal = modal => this.setModal({modal: modal, key: 'open', value: true})
-    closeModal = modal => this.setModal({modal: modal, key: 'open', value: false})
+    
+    closeModal = modal => {
+        this.setModal({
+            modal: modal,
+            key: 'open',
+            value: false
+        })
+    }
 
     showDeckDetails = (deckId) => {
         this.setState(prevState => ({
@@ -104,6 +108,15 @@ class App extends React.Component {
         }), () => this.saveChanges('deck'))
     }
 
+    setModal = ({modal, key, value}) => {
+        this.setState(prevState => ({
+            [modal]: {
+                ...prevState[modal],
+                [key]: value
+            }
+        }))
+    }
+
     startReview = (deckId) => {
         const allCards = this.state.card.filter(el => !deckId ? el : el.deckId === deckId)
         const cardsToLearn = allCards.filter(el => this.nextReviewInDays(el.nextReview) <= 0)
@@ -122,40 +135,60 @@ class App extends React.Component {
     handleCard = (level, card) => {
         // level: hard/medium/easy
         const cardDeck = [...this.state.reviewModal.card]
-        cardDeck.shift()
 
         if(level === 'hard') {
             card.hardCount++
+            cardDeck.shift()
             cardDeck.push(card)
-            this.setModal({modal: 'reviewModal', key: 'card', value: cardDeck})
-        } else {
-            let knowledgeLevel = card.knowledgeLevel
-            let days
+
+            this.setModal({
+                modal: 'reviewModal',
+                key: 'card',
+                value: cardDeck
+            })
+        } else if(level === 'medium') {
+            cardDeck.shift()
             const today = new Date()
+            const days = card.knowledgeLevel === 0 ? 2 :
+                         card.knowledgeLevel === 1 ? Math.random() * 3 + 1 :
+                         card.knowledgeLevel === 2 ? Math.random() * 7 + 3 :
+                         Math.random() * 5 + 10
 
-            if(level === 'medium') {
-                days = card.knowledgeLevel === 0 ? 2 :
-                       card.knowledgeLevel === 1 ? Math.random() * 3 + 1 :
-                       card.knowledgeLevel === 2 ? Math.random() * 7 + 3 :
-                       Math.random() * 5 + 10
-            } else {
-                knowledgeLevel++
-                days = card.knowledgeLevel === 0 ? 2 :
-                         card.knowledgeLevel === 1 ? Math.random() * 5  + 5   :
-                         card.knowledgeLevel === 2 ? Math.random() * 10 + 25  :
-                         card.knowledgeLevel === 3 ? Math.random() * 20 + 80  :
-                         card.knowledgeLevel === 4 ? Math.random() * 30 + 340 :
-                         Math.random() * 365 + 365
-            }
+            const miliseconds = Math.floor(Math.max(days,2) / card.hardCount * 24 * 60 * 60 * 1000)
 
-            const miliseconds = Math.floor(Math.max(days / card.hardCount, 2) * 24 * 60 * 60 * 1000)
-            const nextReview = new Date(today.getTime() + miliseconds)
+            const nextReview = new Date(
+                                        today.getTime() + 
+                                        Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000)
+                                    )
 
             this.setState(prevState => ({
                 card: prevState.card.map(el => el.id === card.id ? {
                     ...el,
                     nextReview: nextReview.toISOString(),
-                    knowledgeLevel: knowledgeLevel,
+                } : el),
+                reviewModal: {
+                    ...prevState.reviewModal,
+                    card: cardDeck
+                }
+            }), () => this.saveChanges('card'))
+
+        } else {
+            cardDeck.shift()
+            const today = new Date()
+            const days = card.knowledgeLevel === 0 ? 2 :
+                         card.knowledgeLevel === 1 ? Math.random() * 5  + 5   :
+                         card.knowledgeLevel === 2 ? Math.random() * 10 + 25  :
+                         card.knowledgeLevel === 3 ? Math.random() * 20 + 80  :
+                         card.knowledgeLevel === 4 ? Math.random() * 30 + 340 :
+                         Math.random() * 365 + 365
+
+            const nextReview = new Date(today.getTime() + Math.floor(days / card.hardCount * 24 * 60 * 60 * 1000))
+
+            this.setState(prevState => ({
+                card: prevState.card.map(el => el.id === card.id ? {
+                    ...el,
+                    nextReview: nextReview.toISOString(),
+                    knowledgeLevel: el.knowledgeLevel + 1,
                 } : el),
                 reviewModal: {
                     ...prevState.reviewModal,
@@ -205,16 +238,12 @@ class App extends React.Component {
         const random = n => Math.random() * n
 
         for(let i = 1; i <= amount; i++) {
-            const year = `202${Math.floor(random(2))}`
-            const month = Math.floor((random(12))+1)
-            const day = Math.floor((random(28))+1)
-
             newCards.push({
                 id: startId+i,
                 deckId: deckIdArr[Math.floor(random(deckIdArrLength))],
                 front: textArr[Math.floor(random(textArrLength))],
                 back: textArr[Math.floor(random(textArrLength))],
-                nextReview: `${year}-${month}-${day}`,
+                nextReview: `202${Math.floor(random(3))}-${Math.floor((random(12))+1)}-${Math.floor((random(28))+1)}`,
                 knowledgeLevel: Math.floor(random(5))
             })
         }
@@ -260,16 +289,19 @@ class App extends React.Component {
         })
     }
 
-    saveChanges = name => {
+    saveChanges = (name) => {
         if(!this.state.testMode) {
             data.set(name, [...this.state[name]])
         }
     }
 
     loadLastSave = () => {
+        const card = data.get('card')
+        const deck = data.get('deck')
+
         this.setState({
-            card: data.get('card'),
-            deck: data.get('deck'),
+            card: card,
+            deck: deck,
         })
     }
 
@@ -302,46 +334,63 @@ class App extends React.Component {
         ]
 
         const {testMode} = this.state
+
         const openModal = allModals.find(el => el.open)
 
         return (
-            <AppContext.Provider value={contextElement}>
-                <Header />
-                <main className={styles.main}>
-                    <div className={styles.buttonsContainer}>
-                        <Button
-                            type='primary'
-                            onClick={() => {
-                                this.setModal({modal: 'newCardModal', key: 'deckId', value: false})
-                                this.showModal('newCardModal')
-                            }}
-                        >
-                            new card
-                        </Button>
-                        <Button
-                            type='secondary'
-                            onClick={() => this.showModal('newDeckModal')}
-                        >
-                            new deck
-                        </Button>
-                    </div>
-                    
-                    <Table />
-                    {openModal && <Modal {...openModal} />}
-                    {testMode && (
-                        <TestMode 
-                            testCardsFn={this.testCards}
-                            testDeckFn={this.testDeck}
-                            toggleTestModeFn={this.toggleTestMode}
-                        />
-                    )}
-                </main>
-                <Footer 
-                    testMode={testMode}
-                    toggleTestModeFn={this.toggleTestMode}
-                    showAboutFn={() => this.showModal('aboutModal')}
-                />
-            </AppContext.Provider>
+            <>
+                <AppContext.Provider value={contextElement}>
+                    <Header 
+                        onLoad={() => this.showModal('newCardModal')}
+                    />
+                    <main className={styles.main}>
+                        <div className={styles.buttonsContainer}>
+                            <Button
+                                type='primary'
+                                onClick={() => {
+                                    this.setModal({
+                                        modal: 'newCardModal',
+                                        key: 'deckId',
+                                        value: false
+                                    })
+                                    this.showModal('newCardModal')
+                                }}
+                            >
+                                new card
+                            </Button>
+                            <Button
+                                type='secondary'
+                                onClick={() => this.showModal('newDeckModal')}
+                            >
+                                new deck
+                            </Button>
+                        </div>
+                        <Table />
+
+                        {openModal &&
+                            <>
+                                <div className={styles.modalBackground}></div>
+                                <Modal 
+                                    {...openModal}
+                                />
+                            </>
+                        }
+
+                        {testMode && (
+                            <TestMode 
+                                testCardsFn={this.testCards}
+                                testDeckFn={this.testDeck}
+                                toggleTestModeFn={this.toggleTestMode}
+                            />
+                        )}
+                    </main>
+                    <Footer 
+                        testMode={testMode}
+                        toggleTestModeFn={this.toggleTestMode}
+                        showAboutFn={() => this.showModal('aboutModal')}
+                    />
+                </AppContext.Provider>
+            </>
         );
     }
 }

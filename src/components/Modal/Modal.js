@@ -12,7 +12,7 @@ const Modal = ({title, name, ...props}) => {
     const titleClass = primaryModals.includes(name) ? 'titlePrimary' : 'titleSecondary'
 
     return (
-        <>
+        <div className={styles.container}>
             <div className={styles.modal}>
                 <h2  className={styles[titleClass]}>
                     {title}
@@ -32,7 +32,7 @@ const Modal = ({title, name, ...props}) => {
                     ) : ''}
                 </div>
             </div>
-        </>
+        </div>
     )
 };
 

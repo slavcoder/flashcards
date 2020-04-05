@@ -33,8 +33,7 @@ class ModalReview extends React.Component {
                                 defaultValue={deckId}
                                 showAll={true}
                                 onChangeFn={e => {
-                                    const newDeckId = e.target.value === 'all' ? e.target.value : 
-                                                      Number(e.target.value)
+                                    const newDeckId = Number(e.target.value) ? Number(e.target.value) : 0
                                     context.startReview(newDeckId)
                                 }}
                             />
@@ -138,6 +137,7 @@ class ModalReview extends React.Component {
 
 ModalReview.propTypes = {
     name: PropTypes.string.isRequired,
+    deckId: PropTypes.number.isRequired
 }
 
 

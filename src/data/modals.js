@@ -3,7 +3,7 @@ const modals = {
         open: false,
         name: 'reviewModal',
         title: 'review mode',
-        deckId: 'all',
+        deckId: 0,
         card: []
     },
     newCardModal: {
@@ -33,7 +33,7 @@ const modals = {
         open: false,
         name: 'deckDetailsModal',
         title: 'deck details',
-        deckId: 'all',
+        deckId: 0,
         showMore: false,
         scrollTop: 0
     },

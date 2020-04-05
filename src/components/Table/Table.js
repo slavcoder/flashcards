@@ -20,8 +20,8 @@ const Table = () => (
                         count={context.card.length}
                         name='all'
                         type='default'
-                        reviewFn={() => context.startReview('all')}
-                        showDeckDetailsFn={() => context.showDeckDetails('all')}
+                        reviewFn={() => context.startReview(0)}
+                        showDeckDetailsFn={() => context.showDeckDetails(0)}
                     />
                     {context.deck.map((deck, index) => {
                         const deckCards = context.card.filter(el => el.deckId === deck.id)

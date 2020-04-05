@@ -183,7 +183,7 @@ class ModalNewCard extends React.Component {
 }
 
 ModalNewCard.propTypes = {
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
 }
 
 export default ModalNewCard

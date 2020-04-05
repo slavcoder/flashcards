@@ -155,7 +155,7 @@ class ModalDeckDetails extends React.Component {
                                             context.setModal({
                                                 modal: name,
                                                 key: 'deckId',
-                                                value: e.target.value === 'all' ? e.target.value : Number(e.target.value)
+                                                value: Number(e.target.value) ? Number(e.target.value) : 0
                                             })
                                         }}
                                     />
@@ -164,12 +164,12 @@ class ModalDeckDetails extends React.Component {
                                 <div className={styles.countContainer}>
                                     <div className={styles.countTitle}>cards</div>
                                     <div className={styles.count}>
-                                        {deckId !== 'all' ? context.card.filter(el => el.deckId === deckId).length : 
+                                        {deckId ? context.card.filter(el => el.deckId === deckId).length : 
                                         context.card.length}
                                     </div>
                                 </div>
 
-                                {deckId !== 'all' ? (
+                                {deckId ? (
                                     <ButtonContainer type='bottomSpace'>
                                         <Button 
                                             type='primaryLight'
@@ -213,7 +213,7 @@ class ModalDeckDetails extends React.Component {
                                         </thead>
                                         <tbody>
                                             {context.card
-                                            .filter(el => deckId === 'all' ? el : el.deckId === deckId)
+                                            .filter(el => !deckId ? el : el.deckId === deckId)
                                             .map((item, index) => (
                                                 <tr key={index}>
                                                     <td className={styles.tableQuestion}>
@@ -279,6 +279,7 @@ class ModalDeckDetails extends React.Component {
 ModalDeckDetails.propTypes = {
     name: PropTypes.string.isRequired,
     showMore: PropTypes.bool.isRequired,
+    deckId: PropTypes.number.isRequired
 }
 
 export default ModalDeckDetails
